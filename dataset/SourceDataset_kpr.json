@@ -1,0 +1,21 @@
+{
+	"name": "SourceDataset_kpr",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataStore_blob",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "azure-data-factory-by-example-main.zip",
+				"container": "blob"
+			},
+			"compression": {
+				"type": "ZipDeflate"
+			}
+		}
+	}
+}

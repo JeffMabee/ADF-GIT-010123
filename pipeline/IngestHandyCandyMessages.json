@@ -44,6 +44,24 @@
 						"mappings": [
 							{
 								"source": {
+									"path": "['Product']"
+								},
+								"sink": {
+									"name": "Product",
+									"type": "String"
+								}
+							},
+							{
+								"source": {
+									"path": "['Price']"
+								},
+								"sink": {
+									"name": "Price",
+									"type": "Single"
+								}
+							},
+							{
+								"source": {
 									"path": "$['TransactionId']"
 								},
 								"sink": {
@@ -67,24 +85,6 @@
 								"sink": {
 									"name": "StoreId",
 									"type": "Int16"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Items'][0]['Product']"
-								},
-								"sink": {
-									"name": "Product",
-									"type": "String"
-								}
-							},
-							{
-								"source": {
-									"path": "$['Items'][0]['Price']"
-								},
-								"sink": {
-									"name": "Price",
-									"type": "Single"
 								}
 							}
 						],

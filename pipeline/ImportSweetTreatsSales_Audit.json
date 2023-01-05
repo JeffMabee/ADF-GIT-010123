@@ -70,6 +70,33 @@
 						"type": "DatasetReference"
 					}
 				]
+			},
+			{
+				"name": "Log Pipeline Outcome",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Import Sales Data",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[LogPipelineExecution]"
+				},
+				"linkedServiceName": {
+					"referenceName": "ADF010123",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"folder": {

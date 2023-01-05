@@ -91,7 +91,44 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"storedProcedureName": "[dbo].[LogPipelineExecution]"
+					"storedProcedureName": "[dbo].[LogPipelineExecution]",
+					"storedProcedureParameters": {
+						"FilesRead": {
+							"value": {
+								"value": "@activity('Import Sales Data').output.filesRead",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"PipelineRunId": {
+							"value": {
+								"value": "@pipeline().RunId",
+								"type": "Expression"
+							},
+							"type": "Guid"
+						},
+						"RowsCopied": {
+							"value": {
+								"value": "@activity('Import Sales Data').output.rowsCopied",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RowsRead": {
+							"value": {
+								"value": "@activity('Import Sales Data').output.rowsRead",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"RunEndDateTime": {
+							"value": {
+								"value": "@utcnow()",
+								"type": "Expression"
+							},
+							"type": "DateTime"
+						}
+					}
 				},
 				"linkedServiceName": {
 					"referenceName": "ADF010123",

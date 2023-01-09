@@ -26,10 +26,6 @@
 						"type": "DelimitedTextSource",
 						"additionalColumns": [
 							{
-								"name": "SourceFileName",
-								"value": "$$FILEPATH"
-							},
-							{
 								"name": "RunSeqNo",
 								"value": {
 									"value": "@activity('Get RunSeq Number').output.firstRow.RunSeqNo",

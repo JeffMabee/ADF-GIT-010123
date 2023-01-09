@@ -1,0 +1,10 @@
+{
+	"name": "StorageKey",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://KeyVault-010623.vault.azure.net/"
+		}
+	}
+}

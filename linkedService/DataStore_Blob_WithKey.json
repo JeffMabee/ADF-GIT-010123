@@ -1,0 +1,17 @@
+{
+	"name": "DataStore_Blob_WithKey",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "StorageKey",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "StorageConnectionString"
+			}
+		}
+	}
+}

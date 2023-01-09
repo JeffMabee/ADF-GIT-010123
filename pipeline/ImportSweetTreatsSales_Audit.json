@@ -196,7 +196,7 @@
 				"typeProperties": {
 					"variableName": "RunSeqNo",
 					"value": {
-						"value": "@activity('Get RunSeq Number').output.firstRow.RunSeqNo",
+						"value": "@string(activity('Get RunSeq Number').output.firstRow.RunSeqNo)",
 						"type": "Expression"
 					}
 				}

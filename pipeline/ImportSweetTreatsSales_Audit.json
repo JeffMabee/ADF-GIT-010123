@@ -5,7 +5,14 @@
 			{
 				"name": "Import Sales Data",
 				"type": "Copy",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set RunSeqNo",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -21,7 +28,7 @@
 							{
 								"name": "RunSeqNo",
 								"value": {
-									"value": "@activity('Get RunSeq Number').output.firstRow.RunSeqNo",
+									"value": "@variables('RunSeqNo')",
 									"type": "Expression"
 								}
 							}
@@ -120,7 +127,7 @@
 						},
 						"RunSeqNo": {
 							"value": {
-								"value": "@activity('Import Sales Data').output.RunSeqNo",
+								"value": "@variables('RunSeqNo')",
 								"type": "Expression"
 							},
 							"type": "Int32"

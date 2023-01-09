@@ -26,7 +26,7 @@
 						"type": "DelimitedTextSource",
 						"additionalColumns": [
 							{
-								"name": "RunSeqNo",
+								"name": "RunSeqNo3",
 								"value": {
 									"value": "@activity('Get RunSeq Number').output.firstRow.RunSeqNo\n",
 									"type": "Expression"

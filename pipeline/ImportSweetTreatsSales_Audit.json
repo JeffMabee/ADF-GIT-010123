@@ -28,7 +28,7 @@
 							{
 								"name": "RunSeqNo",
 								"value": {
-									"value": "@activity('Get RunSeq Number').output.firstRow.RunSeqNo",
+									"value": "@activity('Get RunSeq Number').output.RunSeqNo\n",
 									"type": "Expression"
 								}
 							}

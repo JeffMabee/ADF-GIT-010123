@@ -136,7 +136,7 @@
 							"type": "Int32"
 						},
 						"RunStatus": {
-							"value": null,
+							"value": "Done",
 							"type": "String"
 						}
 					}

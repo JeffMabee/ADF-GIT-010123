@@ -102,6 +102,7 @@
 						"referenceName": "JSON_DataStore_Blob_AnyKey",
 						"type": "DatasetReference",
 						"parameters": {
+							"Container": "sampledata",
 							"Directory": ".",
 							"File": ".",
 							"LinkedServiceConnectionSecret": "StorageConnectionString"

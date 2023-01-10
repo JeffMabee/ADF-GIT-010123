@@ -2,8 +2,14 @@
 	"name": "JSON_DataStore_Blob_AnyKey",
 	"properties": {
 		"linkedServiceName": {
-			"referenceName": "DataStore_Blob_WithKey",
-			"type": "LinkedServiceReference"
+			"referenceName": "AnyBlobStorage",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"ConnectionSecret": {
+					"value": "@dataset().LinkedServiceConnectionSecret",
+					"type": "Expression"
+				}
+			}
 		},
 		"parameters": {
 			"Container": {
@@ -16,6 +22,9 @@
 			"File": {
 				"type": "string",
 				"defaultValue": "."
+			},
+			"LinkedServiceConnectionSecret": {
+				"type": "string"
 			}
 		},
 		"folder": {

@@ -93,8 +93,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "JSON_HandyCandy",
-						"type": "DatasetReference"
+						"referenceName": "JSON_DataStore_Blob_WithKey",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "sampledata",
+							"Directory": ".",
+							"File": "."
+						}
 					}
 				],
 				"outputs": [

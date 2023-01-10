@@ -99,8 +99,13 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "JSON_SugarCube",
-						"type": "DatasetReference"
+						"referenceName": "JSON_DataStore_Blob_WithKey",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "sampledata",
+							"Directory": ".",
+							"File": "."
+						}
 					}
 				],
 				"outputs": [

@@ -3,7 +3,31 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Execute Import Sweet Treats",
+				"name": "Execute Import Desserts4All",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Execute Import SweetTreats",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ImportSTFormatFolder",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"WildCardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+						"WildCardFileName": "*.csv"
+					}
+				}
+			},
+			{
+				"name": "Execute Import SweetTreats",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
@@ -14,7 +38,7 @@
 					},
 					"waitOnCompletion": true,
 					"parameters": {
-						"WildCardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+						"WildCardFolderPath": "azure-data-factory-by-example-main/SampleData/SweetTreats",
 						"WildCardFileName": "*.csv"
 					}
 				}

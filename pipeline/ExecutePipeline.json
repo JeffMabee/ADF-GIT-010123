@@ -1,6 +1,25 @@
 {
 	"name": "ExecutePipeline",
 	"properties": {
+		"activities": [
+			{
+				"name": "Execute Import Sweet Treats",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "ImportSTFormatFolder",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"WildCardFolderPath": "azure-data-factory-by-example-main/SampleData/Desserts4All",
+						"WildCardFileName": "*.csv"
+					}
+				}
+			}
+		],
 		"folder": {
 			"name": "Chapter 5"
 		},

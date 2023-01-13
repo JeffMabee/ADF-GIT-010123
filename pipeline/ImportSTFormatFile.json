@@ -224,10 +224,12 @@
 		],
 		"parameters": {
 			"Directory": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
 			},
 			"File": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "NBN-202006.csv"
 			}
 		},
 		"variables": {

@@ -36,14 +36,6 @@
 						"storeSettings": {
 							"type": "AzureBlobStorageReadSettings",
 							"recursive": true,
-							"wildcardFolderPath": {
-								"value": "@pipeline().parameters.WildCardFolderPath",
-								"type": "Expression"
-							},
-							"wildcardFileName": {
-								"value": "@pipeline().parameters.WildCardFileName",
-								"type": "Expression"
-							},
 							"enablePartitionDiscovery": false
 						},
 						"formatSettings": {
@@ -74,8 +66,14 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"Container": "sampledata",
-							"Directory": ".",
-							"FileName": ".",
+							"Directory": {
+								"value": "@pipeline().parameters.Directory",
+								"type": "Expression"
+							},
+							"FileName": {
+								"value": "@pipeline().parameters.File",
+								"type": "Expression"
+							},
 							"LinkedServiceConnectionSecret": "StorageConnectionString"
 						}
 					}

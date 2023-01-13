@@ -70,8 +70,14 @@
 				},
 				"inputs": [
 					{
-						"referenceName": "CSV_SweetTreats",
-						"type": "DatasetReference"
+						"referenceName": "CSV_DataStore_AnyKey",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "sampledata",
+							"Directory": ".",
+							"FileName": ".",
+							"LinkedServiceConnectionSecret": "StorageConnectionString"
+						}
 					}
 				],
 				"outputs": [

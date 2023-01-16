@@ -28,7 +28,11 @@
 							"LinkedServiceConnectionSecret": "StorageConnectionString"
 						}
 					},
-					"fieldList": [],
+					"fieldList": [
+						"exists",
+						"itemType",
+						"itemName"
+					],
 					"storeSettings": {
 						"type": "AzureBlobStorageReadSettings",
 						"enablePartitionDiscovery": false

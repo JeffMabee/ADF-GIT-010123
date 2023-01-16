@@ -350,7 +350,20 @@
 										"type": "DelimitedTextReadSettings"
 									}
 								},
-								"enableStaging": false
+								"sink": {
+									"type": "AzureSqlSink",
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
 							},
 							"inputs": [
 								{
@@ -361,6 +374,16 @@
 										"Directory": ".",
 										"FileName": ".",
 										"LinkedServiceConnectionSecret": "StorageConnectionString"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ASQL_Dynamic",
+									"type": "DatasetReference",
+									"parameters": {
+										"SchemaName": "dbo",
+										"TableName": "LoadingError"
 									}
 								}
 							]

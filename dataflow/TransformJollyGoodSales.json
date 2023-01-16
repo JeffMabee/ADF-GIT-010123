@@ -32,7 +32,7 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> JollyGoodSales",
-				"JollyGoodSales filter(ERROR_FUNCTION('')) ~> FilterOutTotals"
+				"JollyGoodSales filter(Product != 'Month Total') ~> FilterOutTotals"
 			]
 		}
 	}

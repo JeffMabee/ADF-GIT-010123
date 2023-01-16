@@ -1,6 +1,12 @@
 {
 	"name": "ImportSTSFormatFiles",
 	"properties": {
+		"parameters": {
+			"FolderPath": {
+				"type": "string",
+				"defaultValue": "azure-data-factory-by-example-main/SampleData/NaughtyButNice"
+			}
+		},
 		"folder": {
 			"name": "Chapter6- Controlling Flow"
 		},

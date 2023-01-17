@@ -108,7 +108,7 @@
 					"storedProcedureParameters": {
 						"runSeqNo": {
 							"value": {
-								"value": "@activity('Get Run Seq').output.firstRow",
+								"value": "@activity('Get Run Seq').output.firstRow.RunSeqNo",
 								"type": "Expression"
 							},
 							"type": "Int32"
@@ -163,7 +163,7 @@
 						},
 						"RunSeqNo": {
 							"value": {
-								"value": "@activity('Get Run Seq').output.firstRow",
+								"value": "@activity('Get Run Seq').output.firstRow.RunSeqNo",
 								"type": "Expression"
 							},
 							"type": "Int32"

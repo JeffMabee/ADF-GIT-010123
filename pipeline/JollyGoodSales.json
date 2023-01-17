@@ -107,10 +107,7 @@
 					"storedProcedureName": "[dbo].[PersistLoadedSales]",
 					"storedProcedureParameters": {
 						"runSeqNo": {
-							"value": {
-								"value": "@activity('Get Run Seq').output.firstRow",
-								"type": "Expression"
-							},
+							"value": "",
 							"type": "Int32"
 						}
 					}
@@ -143,15 +140,15 @@
 					"storedProcedureName": "[dbo].[LogPipelineEnd]",
 					"storedProcedureParameters": {
 						"FilesRead": {
-							"value": "",
+							"value": null,
 							"type": "Int32"
 						},
 						"RowsCopied": {
-							"value": "",
+							"value": null,
 							"type": "Int32"
 						},
 						"RowsRead": {
-							"value": "",
+							"value": null,
 							"type": "Int32"
 						},
 						"RunEndDateTime": {

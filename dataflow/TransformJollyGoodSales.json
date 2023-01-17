@@ -82,7 +82,7 @@
 				"SalesValueUSD select(mapColumn(",
 				"          SalesMonth = Period,",
 				"          Product,",
-				"          {Units Sold},",
+				"          UnitsSold = {Units Sold},",
 				"          SalesValueUSD,",
 				"          Retailer,",
 				"          RunSeqNo",

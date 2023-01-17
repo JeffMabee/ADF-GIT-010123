@@ -21,7 +21,7 @@
 						"storedProcedureParameters": {
 							"Comments": {
 								"type": "String",
-								"value": "\"Dataflow run\""
+								"value": ""
 							},
 							"PipelineRunId": {
 								"type": "Guid",

@@ -72,7 +72,7 @@
 						"type": "DataFlowReference",
 						"parameters": {
 							"RunSeqNo": {
-								"value": "@activity('Get Run Seq').output.firstRow",
+								"value": "@int(activity('Get Run Seq').output.firstRow.RunSeqNo)",
 								"type": "Expression"
 							}
 						}

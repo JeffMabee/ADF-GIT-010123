@@ -29,6 +29,9 @@
 				},
 				{
 					"name": "USDOnly"
+				},
+				{
+					"name": "LookupExchangeRates"
 				}
 			],
 			"scriptLines": [
@@ -58,7 +61,12 @@
 				"     sheetName: 'Sheet1',",
 				"     firstRowAsHeader: true) ~> ExchangeRates",
 				"JollyGoodSales filter(Product != 'Month Total') ~> FilterOutTotals",
-				"ExchangeRates filter(ToCurrency=='USD') ~> USDOnly"
+				"ExchangeRates filter(ToCurrency=='USD') ~> USDOnly",
+				"FilterOutTotals, USDOnly lookup(Currency == FromCurrency",
+				"     && Period == Date,",
+				"     multiple: false,",
+				"     pickup: 'any',",
+				"     broadcast: 'auto')~> LookupExchangeRates"
 			]
 		}
 	}

@@ -107,7 +107,10 @@
 					"storedProcedureName": "[dbo].[PersistLoadedSales]",
 					"storedProcedureParameters": {
 						"runSeqNo": {
-							"value": "",
+							"value": {
+								"value": "@activity('Get Run Seq').output.firstRow",
+								"type": "Expression"
+							},
 							"type": "Int32"
 						}
 					}

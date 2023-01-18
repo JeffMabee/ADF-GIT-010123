@@ -1,0 +1,17 @@
+{
+	"name": "UpdateProduct",
+	"properties": {
+		"folder": {
+			"name": "Chapter 7"
+		},
+		"type": "MappingDataFlow",
+		"typeProperties": {
+			"sources": [],
+			"sinks": [],
+			"transformations": [],
+			"scriptLines": [
+				""
+			]
+		}
+	}
+}

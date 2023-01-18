@@ -13,6 +13,13 @@
 						"type": "DatasetReference"
 					},
 					"name": "ImportData"
+				},
+				{
+					"dataset": {
+						"referenceName": "ASQL_Dynamic",
+						"type": "DatasetReference"
+					},
+					"name": "Product"
 				}
 			],
 			"sinks": [],
@@ -22,6 +29,9 @@
 				},
 				{
 					"name": "JustProductsPlease"
+				},
+				{
+					"name": "DoWeHaveProduct"
 				}
 			],
 			"scriptLines": [
@@ -38,6 +48,16 @@
 				"     validateSchema: false,",
 				"     isolationLevel: 'READ_UNCOMMITTED',",
 				"     format: 'table') ~> ImportData",
+				"source(output(",
+				"          Product as string,",
+				"          ProductName as string,",
+				"          WeightInOunces as decimal(19,2),",
+				"          WeightInGrams as decimal(19,2)",
+				"     ),",
+				"     allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     isolationLevel: 'READ_UNCOMMITTED',",
+				"     format: 'table') ~> Product",
 				"ImportData derive(ProductName = trim(left(Product, length(Product) - length(:WeightString))),",
 				"          WeightInOunces = toFloat(replace(:WeightString, :WeightUnit, '')) / iif(:WeightUnit=='g', 28.3495, 1.0),",
 				"          WeightInGrams = toFloat(replace(:WeightString, :WeightUnit, '')) * iif(:WeightUnit=='g', 1.0,28.3495),",
@@ -45,7 +65,10 @@
 				"          WeightUnit := iif(endsWith(Product, 'oz'), 'oz', 'g')) ~> GetWeights",
 				"GetWeights aggregate(groupBy(Product),",
 				"     ProductName = first(ProductName),",
-				"          each(match(startsWith(name, 'Weight')), $$ = first($$))) ~> JustProductsPlease"
+				"          each(match(startsWith(name, 'Weight')), $$ = first($$))) ~> JustProductsPlease",
+				"JustProductsPlease, Product exists(JustProductsPlease@Product == Product@Product,",
+				"     negate:true,",
+				"     broadcast: 'auto')~> DoWeHaveProduct"
 			]
 		}
 	}

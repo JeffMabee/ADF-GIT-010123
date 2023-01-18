@@ -22,7 +22,15 @@
 					"name": "Product"
 				}
 			],
-			"sinks": [],
+			"sinks": [
+				{
+					"dataset": {
+						"referenceName": "ASQL_Dynamic",
+						"type": "DatasetReference"
+					},
+					"name": "ProductTable"
+				}
+			],
 			"transformations": [
 				{
 					"name": "GetWeights"
@@ -68,7 +76,23 @@
 				"          each(match(startsWith(name, 'Weight')), $$ = first($$))) ~> JustProductsPlease",
 				"JustProductsPlease, Product exists(JustProductsPlease@Product == Product@Product,",
 				"     negate:true,",
-				"     broadcast: 'auto')~> DoWeHaveProduct"
+				"     broadcast: 'auto')~> DoWeHaveProduct",
+				"DoWeHaveProduct sink(allowSchemaDrift: true,",
+				"     validateSchema: false,",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     format: 'table',",
+				"     skipDuplicateMapInputs: true,",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     mapColumn(",
+				"          Product,",
+				"          ProductName,",
+				"          WeightInOunces,",
+				"          WeightInGrams",
+				"     )) ~> ProductTable"
 			]
 		}
 	}

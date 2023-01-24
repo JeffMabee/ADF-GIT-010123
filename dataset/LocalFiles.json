@@ -1,0 +1,20 @@
+{
+	"name": "LocalFiles",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "FilesOnWindowsMachine",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "Chapter 8 Local File System"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "FileServerLocation",
+				"fileName": "ReferenceCard.pdf"
+			}
+		}
+	}
+}

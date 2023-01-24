@@ -1,0 +1,152 @@
+{
+	"$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"type": "string",
+			"metadata": "Data Factory name",
+			"defaultValue": "adfDataFactory-010123"
+		},
+		"ADF010123_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'ADF010123'"
+		},
+		"DataStore_SampleData_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'DataStore_SampleData'"
+		},
+		"DataStore_blob_connectionString": {
+			"type": "secureString",
+			"metadata": "Secure string for 'connectionString' of 'DataStore_blob'"
+		},
+		"FilesOnWindowsMachine_password": {
+			"type": "secureString",
+			"metadata": "Secure string for 'password' of 'FilesOnWindowsMachine'"
+		},
+		"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "@linkedService().ConnectionSecret"
+		},
+		"DataStore_Blob_WithKey_properties_typeProperties_connectionString_secretName": {
+			"type": "string",
+			"defaultValue": "StorageConnectionString"
+		},
+		"StorageKey_properties_typeProperties_baseUrl": {
+			"type": "string",
+			"defaultValue": "https://KeyVault-010623.vault.azure.net/"
+		},
+		"IROnWindowsMachine_properties_typeProperties_linkedInfo_resourceId": {
+			"type": "string",
+			"defaultValue": "/subscriptions/ccdf1919-42cb-47a6-8146-a07ddb4f555c/resourcegroups/rgDataFactory_010123/providers/Microsoft.DataFactory/factories/SharedFactory-010123/integrationruntimes/SharedSelfHosted"
+		},
+		"FilesOnWindowsMachine_properties_typeProperties_host": {
+			"type": "string",
+			"defaultValue": "\\\\DESKTOP-A4T52I0\\TEMP"
+		},
+		"FilesOnWindowsMachine_properties_typeProperties_userId": {
+			"type": "string",
+			"defaultValue": "jmabee"
+		},
+		"containerUri": {
+			"type": "string",
+			"metadata": "URI to storage account containing linked ARM templates"
+		},
+		"containerSasToken": {
+			"type": "string",
+			"metadata": "Sas token to storage account containing linked ARM templates"
+		}
+	},
+	"variables": {
+		"factoryId": "[concat('Microsoft.DataFactory/factories/', parameters('factoryName'))]"
+	},
+	"resources": [
+		{
+			"name": "adfDataFactory-010123_ArmTemplate_0",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_0.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					},
+					"ADF010123_connectionString": {
+						"value": "[parameters('ADF010123_connectionString')]"
+					},
+					"DataStore_blob_connectionString": {
+						"value": "[parameters('DataStore_blob_connectionString')]"
+					},
+					"DataStore_SampleData_connectionString": {
+						"value": "[parameters('DataStore_SampleData_connectionString')]"
+					},
+					"FilesOnWindowsMachine_password": {
+						"value": "[parameters('FilesOnWindowsMachine_password')]"
+					},
+					"StorageKey_properties_typeProperties_baseUrl": {
+						"value": "[parameters('StorageKey_properties_typeProperties_baseUrl')]"
+					},
+					"IROnWindowsMachine_properties_typeProperties_linkedInfo_resourceId": {
+						"value": "[parameters('IROnWindowsMachine_properties_typeProperties_linkedInfo_resourceId')]"
+					},
+					"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('AnyBlobStorage_properties_typeProperties_connectionString_secretName')]"
+					},
+					"DataStore_Blob_WithKey_properties_typeProperties_connectionString_secretName": {
+						"value": "[parameters('DataStore_Blob_WithKey_properties_typeProperties_connectionString_secretName')]"
+					},
+					"FilesOnWindowsMachine_properties_typeProperties_host": {
+						"value": "[parameters('FilesOnWindowsMachine_properties_typeProperties_host')]"
+					},
+					"FilesOnWindowsMachine_properties_typeProperties_userId": {
+						"value": "[parameters('FilesOnWindowsMachine_properties_typeProperties_userId')]"
+					}
+				}
+			},
+			"dependsOn": []
+		},
+		{
+			"name": "adfDataFactory-010123_ArmTemplate_1",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_1.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adfDataFactory-010123_ArmTemplate_0')]"
+			]
+		},
+		{
+			"name": "adfDataFactory-010123_ArmTemplate_2",
+			"type": "Microsoft.Resources/deployments",
+			"apiVersion": "2018-02-01",
+			"properties": {
+				"mode": "incremental",
+				"templateLink": {
+					"uri": "[concat(parameters('containerUri'), '/ArmTemplate_2.json', parameters('containerSasToken'))]",
+					"contentVersion": "1.0.0.0"
+				},
+				"parameters": {
+					"factoryName": {
+						"value": "[parameters('factoryName')]"
+					}
+				}
+			},
+			"dependsOn": [
+				"[resourceId('Microsoft.Resources/deployments', 'adfDataFactory-010123_ArmTemplate_1')]"
+			]
+		}
+	]
+}

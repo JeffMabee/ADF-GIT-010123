@@ -1,0 +1,45 @@
+{
+	"$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+	"contentVersion": "1.0.0.0",
+	"parameters": {
+		"factoryName": {
+			"value": "adfDataFactory-010123"
+		},
+		"ADF010123_connectionString": {
+			"value": ""
+		},
+		"DataStore_SampleData_connectionString": {
+			"value": ""
+		},
+		"DataStore_blob_connectionString": {
+			"value": ""
+		},
+		"FilesOnWindowsMachine_password": {
+			"value": ""
+		},
+		"AnyBlobStorage_properties_typeProperties_connectionString_secretName": {
+			"value": "@linkedService().ConnectionSecret"
+		},
+		"DataStore_Blob_WithKey_properties_typeProperties_connectionString_secretName": {
+			"value": "StorageConnectionString"
+		},
+		"StorageKey_properties_typeProperties_baseUrl": {
+			"value": "https://KeyVault-010623.vault.azure.net/"
+		},
+		"IROnWindowsMachine_properties_typeProperties_linkedInfo_resourceId": {
+			"value": "/subscriptions/ccdf1919-42cb-47a6-8146-a07ddb4f555c/resourcegroups/rgDataFactory_010123/providers/Microsoft.DataFactory/factories/SharedFactory-010123/integrationruntimes/SharedSelfHosted"
+		},
+		"FilesOnWindowsMachine_properties_typeProperties_host": {
+			"value": "\\\\DESKTOP-A4T52I0\\TEMP"
+		},
+		"FilesOnWindowsMachine_properties_typeProperties_userId": {
+			"value": "jmabee"
+		},
+		"containerUri": {
+			"value": ""
+		},
+		"containerSasToken": {
+			"value": ""
+		}
+	}
+}

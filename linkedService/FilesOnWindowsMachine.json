@@ -1,0 +1,17 @@
+{
+	"name": "FilesOnWindowsMachine",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "FileServer",
+		"typeProperties": {
+			"host": "\\\\DESKTOP-A4T52I0\\TEMP",
+			"userId": "jmabee",
+			"encryptedCredential": "eyJDcmVkZW50aWFsSWQiOiIyZGM4ZmUyZC1mMGZjLTQ4MjItYWE2Ni1lMTMzNzY2MGE2NmIiLCJWZXJzaW9uIjoiMi4wIiwiQ2xhc3NUeXBlIjoiTWljcm9zb2Z0LkRhdGFQcm94eS5Db3JlLkludGVyU2VydmljZURhdGFDb250cmFjdC5DcmVkZW50aWFsU1UwNkNZMTQifQ=="
+		},
+		"connectVia": {
+			"referenceName": "IROnWindowsMachine",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

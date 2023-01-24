@@ -1,0 +1,12 @@
+{
+	"name": "IROnWindowsMachine",
+	"properties": {
+		"type": "SelfHosted",
+		"typeProperties": {
+			"linkedInfo": {
+				"resourceId": "/subscriptions/ccdf1919-42cb-47a6-8146-a07ddb4f555c/resourcegroups/rgDataFactory_010123/providers/Microsoft.DataFactory/factories/SharedFactory-010123/integrationruntimes/SharedSelfHosted",
+				"authorizationType": "Rbac"
+			}
+		}
+	}
+}

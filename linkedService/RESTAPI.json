@@ -1,0 +1,12 @@
+{
+	"name": "RESTAPI",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "https://publicapi.ohgo.com/api/v1/incidents?api-key=c40430cc-0426-4a43-8aa0-1061af233899",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

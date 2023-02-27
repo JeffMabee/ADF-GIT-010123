@@ -1,0 +1,12 @@
+{
+	"name": "OHGO_API",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "RESTAPI",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}

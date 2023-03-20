@@ -1,0 +1,12 @@
+{
+	"name": "OPS_LIST",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ADF010123",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}

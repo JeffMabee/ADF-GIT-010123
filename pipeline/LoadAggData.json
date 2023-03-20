@@ -1,6 +1,37 @@
 {
 	"name": "LoadAggData",
 	"properties": {
+		"activities": [
+			{
+				"name": "GetOPSFiles",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spS_GetOPsList]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "ASQL_Dynamic",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo"
+						}
+					},
+					"firstRowOnly": false
+				}
+			}
+		],
 		"annotations": []
 	}
 }

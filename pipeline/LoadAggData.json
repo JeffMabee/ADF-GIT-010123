@@ -19,7 +19,46 @@
 						"value": "@activity('GetOPs').output.value",
 						"type": "Expression"
 					},
-					"isSequential": true
+					"isSequential": true,
+					"activities": [
+						{
+							"name": "FinishProc",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spU_SetAGG_OPSFileComplete]",
+								"storedProcedureParameters": {
+									"nID": {
+										"value": {
+											"value": "@item().FileID",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"StatusMessage": {
+										"value": "\"SUCCESS\"",
+										"type": "String"
+									},
+									"SuccessFlag": {
+										"value": "1",
+										"type": "Int32"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ADF010123",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
 				}
 			},
 			{

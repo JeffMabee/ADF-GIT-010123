@@ -10,6 +10,8 @@
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
+				"fileName": "AGG.CSV",
+				"folderPath": "XX",
 				"container": "blob"
 			},
 			"columnDelimiter": ",",

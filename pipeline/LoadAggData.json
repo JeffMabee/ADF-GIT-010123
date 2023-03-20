@@ -88,12 +88,14 @@
 									}
 								},
 								"sink": {
-									"type": "JsonSink",
+									"type": "DelimitedTextSink",
 									"storeSettings": {
 										"type": "AzureBlobStorageWriteSettings"
 									},
 									"formatSettings": {
-										"type": "JsonWriteSettings"
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
 									}
 								},
 								"enableStaging": false
@@ -112,7 +114,7 @@
 							],
 							"outputs": [
 								{
-									"referenceName": "AGG_JSON",
+									"referenceName": "AGG_CSV",
 									"type": "DatasetReference"
 								}
 							]

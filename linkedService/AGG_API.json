@@ -1,0 +1,12 @@
+{
+	"name": "AGG_API",
+	"properties": {
+		"annotations": [],
+		"type": "RestService",
+		"typeProperties": {
+			"url": "http://quickstats.nass.usda.gov/",
+			"enableServerCertificateValidation": true,
+			"authenticationType": "Anonymous"
+		}
+	}
+}

@@ -106,7 +106,7 @@
 									"type": "DatasetReference",
 									"parameters": {
 										"param_BASEURL": {
-											"value": "api_GET/?key=B440FAAD-2281-333E-BA7D-62CD2B68B6CD&source_desc=SURVEY&sector_desc=ECONOMICS&commodity_desc=FARM OPERATIONS&agg_level_desc=STATE&year=2020&format=csv",
+											"value": "api/api_GET/?key=B440FAAD-2281-333E-BA7D-62CD2B68B6CD&source_desc=SURVEY&sector_desc=ECONOMICS&commodity_desc=FARM OPERATIONS&agg_level_desc=STATE&year=2020&format=csv",
 											"type": "Expression"
 										}
 									}

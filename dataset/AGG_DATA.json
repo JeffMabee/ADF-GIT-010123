@@ -1,0 +1,26 @@
+{
+	"name": "AGG_DATA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AGG_API",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"param_BASEURL": {
+				"type": "string"
+			},
+			"param_RelURL": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"typeProperties": {
+			"relativeUrl": {
+				"value": "@dataset().param_RelURL",
+				"type": "Expression"
+			}
+		},
+		"schema": []
+	}
+}

@@ -25,10 +25,31 @@
 						"referenceName": "ASQL_Dynamic",
 						"type": "DatasetReference",
 						"parameters": {
-							"SchemaName": "dbo"
+							"SchemaName": "dbo",
+							"TableName": "AggLoadControl_OPS"
 						}
 					},
 					"firstRowOnly": false
+				}
+			},
+			{
+				"name": "GetOPsList",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spS_GetOPsList]"
+				},
+				"linkedServiceName": {
+					"referenceName": "ADF010123",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],

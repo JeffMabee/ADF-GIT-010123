@@ -1,0 +1,12 @@
+{
+	"name": "NEWAGG",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "NEWAGG_SVC",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "RestResource",
+		"schema": []
+	}
+}

@@ -8,9 +8,6 @@
 		"parameters": {
 			"param_BASEURL": {
 				"type": "string"
-			},
-			"param_RelURL": {
-				"type": "string"
 			}
 		},
 		"annotations": [],

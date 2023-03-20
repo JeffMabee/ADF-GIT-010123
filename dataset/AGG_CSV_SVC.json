@@ -1,0 +1,20 @@
+{
+	"name": "AGG_CSV_SVC",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "HTTP_API",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

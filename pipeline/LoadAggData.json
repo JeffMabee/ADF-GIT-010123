@@ -145,7 +145,7 @@
 						"referenceName": "OPS_LIST",
 						"type": "DatasetReference"
 					},
-					"firstRowOnly": false
+					"firstRowOnly": true
 				}
 			}
 		],

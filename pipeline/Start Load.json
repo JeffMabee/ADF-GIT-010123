@@ -213,7 +213,7 @@
 			},
 			"IsRunning": {
 				"type": "Boolean",
-				"defaultValue": true
+				"defaultValue": false
 			},
 			"KillSwitch": {
 				"type": "Boolean",

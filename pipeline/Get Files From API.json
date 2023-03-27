@@ -224,7 +224,7 @@
 				}
 			},
 			{
-				"name": "Stored procedure1",
+				"name": "CLOSE FILE FAULURE",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
 					{

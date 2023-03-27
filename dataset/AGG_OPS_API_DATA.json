@@ -1,0 +1,31 @@
+{
+	"name": "AGG_OPS_API_DATA",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "AGGAPI",
+			"type": "LinkedServiceReference",
+			"parameters": {
+				"CUST_URL": {
+					"value": "@dataset().PARAM_URL",
+					"type": "Expression"
+				}
+			}
+		},
+		"parameters": {
+			"PARAM_URL": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "HttpServerLocation"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

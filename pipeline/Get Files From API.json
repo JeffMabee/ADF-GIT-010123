@@ -58,7 +58,7 @@
 				"typeProperties": {
 					"variableName": "FromYear",
 					"value": {
-						"value": "@activity('Get Next File').output.firstRow.FromYear",
+						"value": "@string(activity('Get Next File').output.firstRow.FromYear)",
 						"type": "Expression"
 					}
 				}
@@ -78,7 +78,7 @@
 				"typeProperties": {
 					"variableName": "FileID",
 					"value": {
-						"value": "@activity('Get Next File').output.firstRow.FileID",
+						"value": "@string(activity('Get Next File').output.firstRow.FileID)",
 						"type": "Expression"
 					}
 				}

@@ -132,11 +132,11 @@
 			},
 			"IsRunning": {
 				"type": "Boolean",
-				"defaultValue": "False"
+				"defaultValue": true
 			},
 			"KillSwitch": {
 				"type": "Boolean",
-				"defaultValue": "False"
+				"defaultValue": false
 			}
 		},
 		"folder": {

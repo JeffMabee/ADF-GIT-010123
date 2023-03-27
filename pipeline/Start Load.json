@@ -64,10 +64,64 @@
 			{
 				"name": "Wait1",
 				"type": "Wait",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start Load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "Start Load",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spU_UpdateMasterPackageControl]",
+					"storedProcedureParameters": {
+						"ID": {
+							"value": {
+								"value": "@int(variables('PackageID'))",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"IsRunning": {
+							"value": {
+								"value": "@bool(variables('IsRunning'))",
+								"type": "Expression"
+							},
+							"type": "Boolean"
+						},
+						"StatusMessage": {
+							"value": "API CALLS TO GET DATA FILES",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ADF010123",
+					"type": "LinkedServiceReference"
 				}
 			}
 		],

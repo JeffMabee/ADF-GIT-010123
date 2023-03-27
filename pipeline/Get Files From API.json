@@ -3,37 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "CALL API",
-				"type": "Copy",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "RestSource",
-						"httpRequestTimeout": "00:01:40",
-						"requestInterval": "00.00:00:00.010",
-						"requestMethod": "GET",
-						"paginationRules": {
-							"supportRFC5988": "true"
-						}
-					},
-					"enableStaging": false
-				},
-				"inputs": [
-					{
-						"referenceName": "OHGO_API",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
 				"name": "Get Next File",
 				"type": "Lookup",
 				"dependsOn": [],
@@ -73,6 +42,72 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "FromYear",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Next File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FromYear",
+					"value": {
+						"value": "@activity('Get Next File').output.firstRow.FromYear",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "FileID",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Next File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileID",
+					"value": {
+						"value": "@activity('Get Next File').output.firstRow.FileID",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "FromYear",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "FileID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "APIURL",
+					"value": {
+						"value": "@concat('http://quickstats.nass.usda.gov/api/api_GET/?key=B440FAAD-2281-333E-BA7D-62CD2B68B6CD&source_desc=SURVEY&sector_desc=ECONOMICS&commodity_desc=FARM OPERATIONS&agg_level_desc=STATE&year=', variables('FromYear'),'&format=csv')",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -83,6 +118,19 @@
 			"ThreadID": {
 				"type": "string",
 				"defaultValue": "1"
+			}
+		},
+		"variables": {
+			"FromYear": {
+				"type": "String",
+				"defaultValue": "2019"
+			},
+			"FileID": {
+				"type": "String",
+				"defaultValue": "-1"
+			},
+			"APIURL": {
+				"type": "String"
 			}
 		},
 		"folder": {

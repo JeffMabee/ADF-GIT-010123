@@ -1,0 +1,37 @@
+{
+	"name": "Get Files From API",
+	"properties": {
+		"activities": [
+			{
+				"name": "CALL API",
+				"type": "Copy",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"enableStaging": false
+				}
+			}
+		],
+		"parameters": {
+			"MasterPackageID": {
+				"type": "string",
+				"defaultValue": "-1"
+			},
+			"ThreadID": {
+				"type": "string",
+				"defaultValue": "1"
+			}
+		},
+		"folder": {
+			"name": "AGGDW"
+		},
+		"annotations": []
+	}
+}

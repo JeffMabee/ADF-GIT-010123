@@ -1,10 +1,15 @@
 {
 	"name": "AGGAPI",
 	"properties": {
+		"parameters": {
+			"CUST_URL": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "HttpServer",
 		"typeProperties": {
-			"url": "http://quickstats.nass.usda.gov/api/api_GET/?key=B440FAAD-2281-333E-BA7D-62CD2B68B6CD&source_desc=SURVEY&sector_desc=ECONOMICS&commodity_desc=FARM OPERATIONS&agg_level_desc=STATE&year=2020&format=csv",
+			"url": "@{linkedService().CUST_URL}",
 			"enableServerCertificateValidation": true,
 			"authenticationType": "Anonymous"
 		}

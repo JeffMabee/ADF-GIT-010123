@@ -84,7 +84,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Build URL",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -110,11 +110,11 @@
 				}
 			},
 			{
-				"name": "Copy data1",
+				"name": "GET API DATA",
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "Build URL",
 						"dependencyConditions": [
 							"Succeeded"
 						]

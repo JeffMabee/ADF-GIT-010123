@@ -80,7 +80,14 @@
 			{
 				"name": "Start Load",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Get Kill Switch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -174,6 +181,26 @@
 					"variableName": "IsRunning",
 					"value": {
 						"value": "@bool(activity('Get Package ControlStatus').output.firstRow.IsRunning)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Kill Switch",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set Running Status",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "KillSwitch",
+					"value": {
+						"value": "@bool(activity('Get Package ControlStatus').output.firstRow.KillSwitch)",
 						"type": "Expression"
 					}
 				}

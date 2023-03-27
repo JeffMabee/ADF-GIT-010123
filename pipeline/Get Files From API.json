@@ -130,7 +130,14 @@
 						{
 							"name": "GET API DATA",
 							"type": "Copy",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "SET FILE NAME",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -186,7 +193,13 @@
 							"outputs": [
 								{
 									"referenceName": "AGG_CSV",
-									"type": "DatasetReference"
+									"type": "DatasetReference",
+									"parameters": {
+										"PARAM_FILENAME": {
+											"value": "@variables('FileName')",
+											"type": "Expression"
+										}
+									}
 								}
 							]
 						},
@@ -276,6 +289,19 @@
 							"linkedServiceName": {
 								"referenceName": "ADF010123",
 								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "SET FILE NAME",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FileName",
+								"value": {
+									"value": "@concat('AGG_OPS_', variables('FromYear'),',CSV')",
+									"type": "Expression"
+								}
 							}
 						}
 					],

@@ -5,12 +5,20 @@
 			"referenceName": "DataStore_blob",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"PARAM_FILENAME": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "DelimitedText",
 		"typeProperties": {
 			"location": {
 				"type": "AzureBlobStorageLocation",
-				"fileName": "AGG.CSV",
+				"fileName": {
+					"value": "@dataset().PARAM_FILENAME",
+					"type": "Expression"
+				},
 				"folderPath": "XX",
 				"container": "blob"
 			},

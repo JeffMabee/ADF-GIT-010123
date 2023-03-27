@@ -262,8 +262,8 @@
 							}
 						},
 						{
-							"name": "Wait1",
-							"type": "Wait",
+							"name": "Execute Pipeline1",
+							"type": "ExecutePipeline",
 							"dependsOn": [
 								{
 									"activity": "Check Kill Switch",
@@ -274,7 +274,18 @@
 							],
 							"userProperties": [],
 							"typeProperties": {
-								"waitTimeInSeconds": 1
+								"pipeline": {
+									"referenceName": "Get Files From API",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"MasterPackageID": {
+										"value": "@variables('PackageID')",
+										"type": "Expression"
+									},
+									"ThreadID": "1"
+								}
 							}
 						}
 					],

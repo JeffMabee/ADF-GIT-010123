@@ -110,8 +110,8 @@
 				}
 			},
 			{
-				"name": "GET API DATA",
-				"type": "Copy",
+				"name": "If Condition1",
+				"type": "IfCondition",
 				"dependsOn": [
 					{
 						"activity": "Build URL",
@@ -120,151 +120,204 @@
 						]
 					}
 				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
 				"userProperties": [],
 				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "HttpReadSettings",
-							"requestMethod": "GET"
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
+					"expression": {
+						"value": "@less(int(variables('FileID')),0)",
+						"type": "Expression"
 					},
-					"sink": {
-						"type": "DelimitedTextSink",
-						"storeSettings": {
-							"type": "AzureBlobStorageWriteSettings"
+					"ifFalseActivities": [
+						{
+							"name": "GET API DATA",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "HttpReadSettings",
+										"requestMethod": "GET"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"sink": {
+									"type": "DelimitedTextSink",
+									"storeSettings": {
+										"type": "AzureBlobStorageWriteSettings"
+									},
+									"formatSettings": {
+										"type": "DelimitedTextWriteSettings",
+										"quoteAllText": true,
+										"fileExtension": ".txt"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AGG_OPS_API_DATA",
+									"type": "DatasetReference",
+									"parameters": {
+										"PARAM_URL": {
+											"value": "@variables('APIURL')",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "AGG_CSV",
+									"type": "DatasetReference"
+								}
+							]
 						},
-						"formatSettings": {
-							"type": "DelimitedTextWriteSettings",
-							"quoteAllText": true,
-							"fileExtension": ".txt"
-						}
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "AGG_OPS_API_DATA",
-						"type": "DatasetReference",
-						"parameters": {
-							"PARAM_URL": {
-								"value": "@variables('APIURL')",
-								"type": "Expression"
+						{
+							"name": "CLOSE_FILE_SUCCESS",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "GET API DATA",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spU_SetAGG_OPSFileComplete]",
+								"storedProcedureParameters": {
+									"nID": {
+										"value": {
+											"value": "@int(variables('FileID'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"StatusMessage": {
+										"value": "SUCCESS",
+										"type": "String"
+									},
+									"SuccessFlag": {
+										"value": "1",
+										"type": "Int32"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ADF010123",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "CLOSE FILE FAULURE",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "GET API DATA",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spU_SetAGG_OPSFileComplete]",
+								"storedProcedureParameters": {
+									"nID": {
+										"value": {
+											"value": "@int(variables('FileID'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"StatusMessage": {
+										"value": "API CALL FAILED",
+										"type": "String"
+									},
+									"SuccessFlag": {
+										"value": "0",
+										"type": "Int32"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ADF010123",
+								"type": "LinkedServiceReference"
 							}
 						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "AGG_CSV",
-						"type": "DatasetReference"
-					}
-				]
-			},
-			{
-				"name": "CLOSE_FILE_SUCCESS",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "GET API DATA",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[spU_SetAGG_OPSFileComplete]",
-					"storedProcedureParameters": {
-						"nID": {
-							"value": {
-								"value": "@int(variables('FileID'))",
-								"type": "Expression"
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Stored procedure1",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
 							},
-							"type": "Int32"
-						},
-						"StatusMessage": {
-							"value": "SUCCESS",
-							"type": "String"
-						},
-						"SuccessFlag": {
-							"value": "1",
-							"type": "Int32"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ADF010123",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "CLOSE FILE FAULURE",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "GET API DATA",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[spU_SetAGG_OPSFileComplete]",
-					"storedProcedureParameters": {
-						"nID": {
-							"value": {
-								"value": "@int(variables('FileID'))",
-								"type": "Expression"
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spU_UpdateMasterPackageControl]",
+								"storedProcedureParameters": {
+									"ID": {
+										"value": {
+											"value": "@int(pipeline().parameters.MasterPackageID)",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"IsRunning": {
+										"value": "false",
+										"type": "Boolean"
+									},
+									"StatusMessage": {
+										"value": "ALL FILES PROCESSED",
+										"type": "String"
+									}
+								}
 							},
-							"type": "Int32"
-						},
-						"StatusMessage": {
-							"value": "API CALL FAILED",
-							"type": "String"
-						},
-						"SuccessFlag": {
-							"value": "0",
-							"type": "Int32"
+							"linkedServiceName": {
+								"referenceName": "ADF010123",
+								"type": "LinkedServiceReference"
+							}
 						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ADF010123",
-					"type": "LinkedServiceReference"
+					]
 				}
 			}
 		],
@@ -288,6 +341,9 @@
 				"defaultValue": "-1"
 			},
 			"APIURL": {
+				"type": "String"
+			},
+			"FileName": {
 				"type": "String"
 			}
 		},

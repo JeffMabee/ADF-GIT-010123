@@ -62,22 +62,6 @@
 				}
 			},
 			{
-				"name": "Wait1",
-				"type": "Wait",
-				"dependsOn": [
-					{
-						"activity": "Start Load",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 1
-				}
-			},
-			{
 				"name": "Start Load",
 				"type": "SqlServerStoredProcedure",
 				"dependsOn": [
@@ -203,6 +187,26 @@
 						"value": "@bool(activity('Get Package ControlStatus').output.firstRow.KillSwitch)",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "Until1",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Start Load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@variables('KillSwitch')",
+						"type": "Expression"
+					},
+					"timeout": "0.12:00:00"
 				}
 			}
 		],

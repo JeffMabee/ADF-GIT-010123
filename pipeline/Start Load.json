@@ -80,14 +80,7 @@
 			{
 				"name": "Start Load",
 				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "Set variable1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
+				"dependsOn": [],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -127,7 +120,14 @@
 			{
 				"name": "Get Package ControlStatus",
 				"type": "Lookup",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Set variable1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"policy": {
 					"timeout": "0.12:00:00",
 					"retry": 0,
@@ -155,6 +155,26 @@
 					"dataset": {
 						"referenceName": "OPS_LIST",
 						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set Running Status",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Package ControlStatus",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "IsRunning",
+					"value": {
+						"value": "@bool(activity('Get Package ControlStatus').output.firstRow.IsRunning)",
+						"type": "Expression"
 					}
 				}
 			}

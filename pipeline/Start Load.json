@@ -210,7 +210,14 @@
 						{
 							"name": "Get Package ControlStatus_INNER",
 							"type": "Lookup",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "GET FILES FROM API",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -262,16 +269,9 @@
 							}
 						},
 						{
-							"name": "Execute Pipeline1",
+							"name": "GET FILES FROM API",
 							"type": "ExecutePipeline",
-							"dependsOn": [
-								{
-									"activity": "Check Kill Switch",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
+							"dependsOn": [],
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {

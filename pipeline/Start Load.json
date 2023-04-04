@@ -349,12 +349,6 @@
 									"dependencyConditions": [
 										"Succeeded"
 									]
-								},
-								{
-									"activity": "Set File Count_THREAD2",
-									"dependencyConditions": [
-										"Succeeded"
-									]
 								}
 							],
 							"userProperties": [],
@@ -535,6 +529,64 @@
 									"referenceName": "OPS_LIST",
 									"type": "DatasetReference"
 								}
+							}
+						},
+						{
+							"name": "Still Running_Thread2",
+							"type": "IfCondition",
+							"dependsOn": [
+								{
+									"activity": "Set File Count_THREAD2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"expression": {
+									"value": "@greater(int(variables('FileCount')),0)",
+									"type": "Expression"
+								},
+								"ifFalseActivities": [
+									{
+										"name": "Stored procedure1_Thread2",
+										"type": "SqlServerStoredProcedure",
+										"dependsOn": [],
+										"policy": {
+											"timeout": "0.12:00:00",
+											"retry": 0,
+											"retryIntervalInSeconds": 30,
+											"secureOutput": false,
+											"secureInput": false
+										},
+										"userProperties": [],
+										"typeProperties": {
+											"storedProcedureName": "[dbo].[spU_UpdateMasterPackageControl]",
+											"storedProcedureParameters": {
+												"ID": {
+													"value": {
+														"value": "@int(variables('PackageID'))",
+														"type": "Expression"
+													},
+													"type": "Int32"
+												},
+												"IsRunning": {
+													"value": "true",
+													"type": "Boolean"
+												},
+												"StatusMessage": {
+													"value": "ALL FILES PROCESSED",
+													"type": "String"
+												}
+											}
+										},
+										"linkedServiceName": {
+											"referenceName": "ADF010123",
+											"type": "LinkedServiceReference"
+										}
+									}
+								]
 							}
 						}
 					],

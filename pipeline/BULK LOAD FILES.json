@@ -35,6 +35,46 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "FileID",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Next Input File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileID",
+					"value": {
+						"value": "@string(activity('Get Next Input File').output.firstRow.FileID)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "FileName",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Next Input File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "FileName",
+					"value": {
+						"value": "@activity('Get Next Input File').output.firstRow.FileLoc",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {

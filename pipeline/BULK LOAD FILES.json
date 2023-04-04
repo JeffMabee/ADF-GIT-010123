@@ -75,6 +75,81 @@
 						"type": "Expression"
 					}
 				}
+			},
+			{
+				"name": "Set Table Name",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "FileID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "FileName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "TableName",
+					"value": {
+						"value": "@concat('rawAGG_OP_',string(pipeline().parameters.ThreadID))",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Copy data1",
+				"type": "Copy",
+				"dependsOn": [
+					{
+						"activity": "Set Table Name",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "DelimitedTextSource",
+						"storeSettings": {
+							"type": "AzureBlobStorageReadSettings",
+							"recursive": true,
+							"enablePartitionDiscovery": false
+						},
+						"formatSettings": {
+							"type": "DelimitedTextReadSettings"
+						}
+					},
+					"enableStaging": false
+				},
+				"inputs": [
+					{
+						"referenceName": "CSV_DataStore_AnyKey",
+						"type": "DatasetReference",
+						"parameters": {
+							"Container": "blob",
+							"Directory": "XX",
+							"FileName": {
+								"value": "@variables('FileName')",
+								"type": "Expression"
+							},
+							"LinkedServiceConnectionSecret": "StorageConnectionString"
+						}
+					}
+				]
 			}
 		],
 		"parameters": {
@@ -98,6 +173,9 @@
 			"FileID": {
 				"type": "String",
 				"defaultValue": "-1"
+			},
+			"TableName": {
+				"type": "String"
 			}
 		},
 		"folder": {

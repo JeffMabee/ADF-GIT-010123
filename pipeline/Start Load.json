@@ -291,7 +291,14 @@
 						{
 							"name": "Check File Count",
 							"type": "Lookup",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "GET FILES FROM API",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -310,6 +317,26 @@
 								"dataset": {
 									"referenceName": "OPS_LIST",
 									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Set File Count",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Check File Count",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FileCount",
+								"value": {
+									"value": "@activity('Check File Count').output.firstRow.CNT",
+									"type": "Expression"
 								}
 							}
 						}

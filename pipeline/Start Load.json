@@ -203,7 +203,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@or(variables('KillSwitch'), not(variables('IsRunning')))",
+						"value": "@or(variables('KillSwitch'), greater(int(variables('FileCount')),0))",
 						"type": "Expression"
 					},
 					"activities": [

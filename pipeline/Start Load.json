@@ -335,7 +335,7 @@
 							"typeProperties": {
 								"variableName": "FileCount",
 								"value": {
-									"value": "@activity('Check File Count').output.firstRow.CNT",
+									"value": "@string(activity('Check File Count').output.firstRow.CNT)",
 									"type": "Expression"
 								}
 							}

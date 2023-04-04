@@ -287,26 +287,6 @@
 									"ThreadID": "1"
 								}
 							}
-						},
-						{
-							"name": "Check IsRunning",
-							"type": "SetVariable",
-							"dependsOn": [
-								{
-									"activity": "Get Package ControlStatus_INNER",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "IsRunning",
-								"value": {
-									"value": "@activity('Get Package ControlStatus_INNER').output.firstRow.IsRunning",
-									"type": "Expression"
-								}
-							}
 						}
 					],
 					"timeout": "0.12:00:00"

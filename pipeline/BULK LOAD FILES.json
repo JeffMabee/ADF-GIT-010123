@@ -133,7 +133,21 @@
 							"type": "DelimitedTextReadSettings"
 						}
 					},
-					"enableStaging": false
+					"sink": {
+						"type": "AzureSqlSink",
+						"writeBehavior": "insert",
+						"sqlWriterUseTableLock": true,
+						"disableMetricsCollection": false
+					},
+					"enableStaging": false,
+					"translator": {
+						"type": "TabularTranslator",
+						"typeConversion": true,
+						"typeConversionSettings": {
+							"allowDataTruncation": true,
+							"treatBooleanAsNumber": false
+						}
+					}
 				},
 				"inputs": [
 					{
@@ -147,6 +161,19 @@
 								"type": "Expression"
 							},
 							"LinkedServiceConnectionSecret": "StorageConnectionString"
+						}
+					}
+				],
+				"outputs": [
+					{
+						"referenceName": "ASQL_Dynamic",
+						"type": "DatasetReference",
+						"parameters": {
+							"SchemaName": "dbo",
+							"TableName": {
+								"value": "@variables('TableName')",
+								"type": "Expression"
+							}
 						}
 					}
 				]

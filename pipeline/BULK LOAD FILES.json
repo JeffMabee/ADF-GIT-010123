@@ -1,0 +1,25 @@
+{
+	"name": "BULK LOAD FILES",
+	"properties": {
+		"parameters": {
+			"MasterPackageID": {
+				"type": "string",
+				"defaultValue": "-1"
+			},
+			"ThreadID": {
+				"type": "string",
+				"defaultValue": "0"
+			}
+		},
+		"variables": {
+			"IsRunning": {
+				"type": "String",
+				"defaultValue": "0"
+			}
+		},
+		"folder": {
+			"name": "AGGDW"
+		},
+		"annotations": []
+	}
+}

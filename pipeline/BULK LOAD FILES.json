@@ -1,6 +1,42 @@
 {
 	"name": "BULK LOAD FILES",
 	"properties": {
+		"activities": [
+			{
+				"name": "Get Next Input File",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spS_GetNextBulkFile_OPS]",
+						"storedProcedureParameters": {
+							"nThreadID": {
+								"type": "Int32",
+								"value": {
+									"value": "@int(pipeline().parameters.ThreadID)",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OPS_LIST",
+						"type": "DatasetReference"
+					}
+				}
+			}
+		],
 		"parameters": {
 			"MasterPackageID": {
 				"type": "string",
@@ -15,6 +51,13 @@
 			"IsRunning": {
 				"type": "String",
 				"defaultValue": "0"
+			},
+			"FileName": {
+				"type": "String"
+			},
+			"FileID": {
+				"type": "String",
+				"defaultValue": "-1"
 			}
 		},
 		"folder": {

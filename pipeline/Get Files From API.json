@@ -299,7 +299,7 @@
 							"typeProperties": {
 								"variableName": "FileName",
 								"value": {
-									"value": "@concat('AGG_OPS_', variables('FromYear'),',CSV')",
+									"value": "@concat('AGG_OPS_', variables('FromYear'),'.CSV')",
 									"type": "Expression"
 								}
 							}

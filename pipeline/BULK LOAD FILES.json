@@ -220,7 +220,10 @@
 							"type": "Int32"
 						},
 						"StatusMessage": {
-							"value": "ERROR: FAILED TO BULK LOAD",
+							"value": {
+								"value": "@concat('ERROR: FAILED TO BULK LOAD ',activity('Copy data1').Error.message)",
+								"type": "Expression"
+							},
 							"type": "String"
 						},
 						"SuccessFlag": {

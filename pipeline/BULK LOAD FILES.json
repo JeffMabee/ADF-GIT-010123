@@ -181,6 +181,58 @@
 						}
 					}
 				]
+			},
+			{
+				"name": "BAD FILE",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spU_SetAGGBulkLoad_OPS]",
+					"storedProcedureParameters": {
+						"nID": {
+							"value": {
+								"value": "@int(variables('FileID'))",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"nTotalChanged": {
+							"value": "0",
+							"type": "Int32"
+						},
+						"nTotalRows": {
+							"value": "0",
+							"type": "Int32"
+						},
+						"StatusMessage": {
+							"value": "ERROR: FAILED TO BULK LOAD",
+							"type": "String"
+						},
+						"SuccessFlag": {
+							"value": "0",
+							"type": "Int32"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ADF010123",
+					"type": "LinkedServiceReference"
+				}
 			}
 		],
 		"parameters": {

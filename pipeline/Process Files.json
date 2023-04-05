@@ -1,0 +1,60 @@
+{
+	"name": "Process Files",
+	"properties": {
+		"activities": [
+			{
+				"name": "Raw Data Thread 1",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "BULK LOAD FILES",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"MasterPackageID": "1",
+						"ThreadID": "1"
+					}
+				}
+			},
+			{
+				"name": "Raw Data Thread 2",
+				"type": "ExecutePipeline",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "BULK LOAD FILES",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"ThreadID": "2"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"MasterPackageID": {
+				"type": "string",
+				"defaultValue": "-1"
+			}
+		},
+		"variables": {
+			"KillSwitch": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"IsRunning": {
+				"type": "String",
+				"defaultValue": "1"
+			}
+		},
+		"folder": {
+			"name": "AGGDW"
+		},
+		"annotations": []
+	}
+}

@@ -262,6 +262,14 @@
 			},
 			"TableName": {
 				"type": "String"
+			},
+			"RawCount": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"FactCount": {
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"folder": {

@@ -236,6 +236,51 @@
 					"referenceName": "ADF010123",
 					"type": "LinkedServiceReference"
 				}
+			},
+			{
+				"name": "Process File",
+				"type": "Lookup",
+				"dependsOn": [
+					{
+						"activity": "Copy data1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spI_ProcessOPSData]",
+						"storedProcedureParameters": {
+							"DEBUG": {
+								"type": "Boolean",
+								"value": "false"
+							},
+							"nThreadID": {
+								"type": "Int32",
+								"value": {
+									"value": "@pipeline().parameters.ThreadID",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OPS_LIST",
+						"type": "DatasetReference"
+					}
+				}
 			}
 		],
 		"parameters": {

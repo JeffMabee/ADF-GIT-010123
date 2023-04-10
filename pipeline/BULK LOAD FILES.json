@@ -424,7 +424,8 @@
 									"value": "@concat('https://management.azure.com/subscriptions/ccdf1919-42cb-47a6-8146-a07ddb4f555c/resourceGroups/adfDataFactory-010123/providers/Microsoft.DataFactory/factories/',pipeline().DataFactory,'/pipelineruns/',pipeline().RunId,'/cancel?api-version=2018-06-01')",
 									"type": "Expression"
 								},
-								"method": "POST"
+								"method": "POST",
+								"body": "s"
 							}
 						}
 					]

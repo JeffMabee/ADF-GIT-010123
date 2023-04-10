@@ -5,7 +5,14 @@
 			{
 				"name": "Process All Files",
 				"type": "Until",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "Start Load",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
@@ -394,6 +401,127 @@
 					],
 					"timeout": "0.12:00:00"
 				}
+			},
+			{
+				"name": "Start Load",
+				"type": "SqlServerStoredProcedure",
+				"dependsOn": [
+					{
+						"activity": "Get Kill Switch",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"storedProcedureName": "[dbo].[spU_UpdateMasterPackageControl]",
+					"storedProcedureParameters": {
+						"ID": {
+							"value": {
+								"value": "@int(variables('PackageID'))",
+								"type": "Expression"
+							},
+							"type": "Int32"
+						},
+						"IsRunning": {
+							"value": {
+								"value": "@bool(variables('IsRunning'))",
+								"type": "Expression"
+							},
+							"type": "Boolean"
+						},
+						"StatusMessage": {
+							"value": "API CALLS TO GET DATA FILES",
+							"type": "String"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ADF010123",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Get Package ControlStatus",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spS_GetMasterPackageControlStatus]",
+						"storedProcedureParameters": {
+							"ID": {
+								"type": "Int32",
+								"value": {
+									"value": "@int(pipeline().parameters.MasterPackageID)",
+									"type": "Expression"
+								}
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "OPS_LIST",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Set Running Status",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Get Package ControlStatus",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "IsRunning",
+					"value": {
+						"value": "@string(activity('Get Package ControlStatus').output.firstRow.IsRunning)",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Get Kill Switch",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Set Running Status",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "KillSwitch",
+					"value": {
+						"value": "@bool(activity('Get Package ControlStatus').output.firstRow.KillSwitch)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -414,10 +542,6 @@
 			"FileCount": {
 				"type": "String",
 				"defaultValue": "0"
-			},
-			"PackageID": {
-				"type": "String",
-				"defaultValue": "-1"
 			}
 		},
 		"folder": {

@@ -77,313 +77,6 @@
 				}
 			},
 			{
-				"name": "Set Table Name",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Valid File",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "TableName",
-					"value": {
-						"value": "@concat('rawAGG_OP_',string(pipeline().parameters.ThreadID))",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Copy data1",
-				"type": "Copy",
-				"dependsOn": [
-					{
-						"activity": "Set Table Name",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "DelimitedTextSource",
-						"storeSettings": {
-							"type": "AzureBlobStorageReadSettings",
-							"recursive": true,
-							"enablePartitionDiscovery": false
-						},
-						"formatSettings": {
-							"type": "DelimitedTextReadSettings"
-						}
-					},
-					"sink": {
-						"type": "AzureSqlSink",
-						"preCopyScript": {
-							"value": "TRUNCATE TABLE @{variables('TableName')}",
-							"type": "Expression"
-						},
-						"writeBehavior": "insert",
-						"sqlWriterUseTableLock": true,
-						"disableMetricsCollection": false
-					},
-					"enableStaging": false,
-					"translator": {
-						"type": "TabularTranslator",
-						"typeConversion": true,
-						"typeConversionSettings": {
-							"allowDataTruncation": true,
-							"treatBooleanAsNumber": false
-						}
-					}
-				},
-				"inputs": [
-					{
-						"referenceName": "CSV_DataStore_AnyKey",
-						"type": "DatasetReference",
-						"parameters": {
-							"Container": "blob",
-							"Directory": "XX",
-							"FileName": {
-								"value": "@variables('FileName')",
-								"type": "Expression"
-							},
-							"LinkedServiceConnectionSecret": "StorageConnectionString"
-						}
-					}
-				],
-				"outputs": [
-					{
-						"referenceName": "ASQL_Dynamic",
-						"type": "DatasetReference",
-						"parameters": {
-							"SchemaName": "dbo",
-							"TableName": {
-								"value": "@variables('TableName')",
-								"type": "Expression"
-							}
-						}
-					}
-				]
-			},
-			{
-				"name": "BAD FILE",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "Copy data1",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[spU_SetAGGBulkLoad_OPS]",
-					"storedProcedureParameters": {
-						"nID": {
-							"value": {
-								"value": "@int(variables('FileID'))",
-								"type": "Expression"
-							},
-							"type": "Int32"
-						},
-						"nTotalChanged": {
-							"value": "0",
-							"type": "Int32"
-						},
-						"nTotalRows": {
-							"value": "0",
-							"type": "Int32"
-						},
-						"StatusMessage": {
-							"value": {
-								"value": "@concat('ERROR: FAILED TO BULK LOAD ',activity('Copy data1').Error.message)",
-								"type": "Expression"
-							},
-							"type": "String"
-						},
-						"SuccessFlag": {
-							"value": "0",
-							"type": "Int32"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ADF010123",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
-				"name": "Process File",
-				"type": "Lookup",
-				"dependsOn": [
-					{
-						"activity": "Copy data1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"source": {
-						"type": "AzureSqlSource",
-						"sqlReaderStoredProcedureName": "[dbo].[spI_ProcessOPSData]",
-						"storedProcedureParameters": {
-							"DEBUG": {
-								"type": "Boolean",
-								"value": "false"
-							},
-							"nThreadID": {
-								"type": "Int32",
-								"value": {
-									"value": "@pipeline().parameters.ThreadID",
-									"type": "Expression"
-								}
-							}
-						},
-						"queryTimeout": "02:00:00",
-						"partitionOption": "None"
-					},
-					"dataset": {
-						"referenceName": "OPS_LIST",
-						"type": "DatasetReference"
-					}
-				}
-			},
-			{
-				"name": "RawCount",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Process File",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "RawCount",
-					"value": {
-						"value": "@string(activity('Process File').output.firstRow.RawCount)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "FactCount",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "Process File",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "FactCount",
-					"value": {
-						"value": "@string(activity('Process File').output.firstRow.FactCount)",
-						"type": "Expression"
-					}
-				}
-			},
-			{
-				"name": "Finsish File",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [
-					{
-						"activity": "FactCount",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "RawCount",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[spU_SetAGGBulkLoad_OPS]",
-					"storedProcedureParameters": {
-						"nID": {
-							"value": {
-								"value": "@int(variables('FileID'))",
-								"type": "Expression"
-							},
-							"type": "Int32"
-						},
-						"nTotalChanged": {
-							"value": {
-								"value": "@int(variables('FactCount'))",
-								"type": "Expression"
-							},
-							"type": "Int32"
-						},
-						"nTotalRows": {
-							"value": {
-								"value": "@int(variables('RawCount'))",
-								"type": "Expression"
-							},
-							"type": "Int32"
-						},
-						"StatusMessage": {
-							"value": "SUCCESS",
-							"type": "String"
-						},
-						"SuccessFlag": {
-							"value": {
-								"value": "@int('1')",
-								"type": "Expression"
-							},
-							"type": "Int32"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "ADF010123",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "Valid File",
 				"type": "IfCondition",
 				"dependsOn": [
@@ -406,11 +99,31 @@
 						"value": "@greater(int(variables('FileID')),0)",
 						"type": "Expression"
 					},
-					"ifFalseActivities": [
+					"ifTrueActivities": [
 						{
-							"name": "Web1",
-							"type": "WebActivity",
+							"name": "Set Table Name",
+							"type": "SetVariable",
 							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "TableName",
+								"value": {
+									"value": "@concat('rawAGG_OP_',string(pipeline().parameters.ThreadID))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [
+								{
+									"activity": "Set Table Name",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -420,35 +133,274 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"url": {
-									"value": "@concat('https://management.azure.com/subscriptions/ccdf1919-42cb-47a6-8146-a07ddb4f555c/resourceGroups/adfDataFactory-010123/providers/Microsoft.DataFactory/factories/',pipeline().DataFactory,'/pipelineruns/',pipeline().RunId,'/cancel?api-version=2018-06-01')",
-									"type": "Expression"
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
 								},
-								"method": "POST",
-								"body": "{“message”:”Cancelling the pipeline”}",
-								"authentication": {
-									"type": "MSI",
-									"resource": "https://management.azure.com"
+								"sink": {
+									"type": "AzureSqlSink",
+									"preCopyScript": {
+										"value": "TRUNCATE TABLE @{variables('TableName')}",
+										"type": "Expression"
+									},
+									"writeBehavior": "insert",
+									"sqlWriterUseTableLock": true,
+									"disableMetricsCollection": false
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
 								}
+							},
+							"inputs": [
+								{
+									"referenceName": "CSV_DataStore_AnyKey",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": "blob",
+										"Directory": "XX",
+										"FileName": {
+											"value": "@variables('FileName')",
+											"type": "Expression"
+										},
+										"LinkedServiceConnectionSecret": "StorageConnectionString"
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "ASQL_Dynamic",
+									"type": "DatasetReference",
+									"parameters": {
+										"SchemaName": "dbo",
+										"TableName": {
+											"value": "@variables('TableName')",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "BAD FILE",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spU_SetAGGBulkLoad_OPS]",
+								"storedProcedureParameters": {
+									"nID": {
+										"value": {
+											"value": "@int(variables('FileID'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"nTotalChanged": {
+										"value": "0",
+										"type": "Int32"
+									},
+									"nTotalRows": {
+										"value": "0",
+										"type": "Int32"
+									},
+									"StatusMessage": {
+										"value": {
+											"value": "@concat('ERROR: FAILED TO BULK LOAD ',activity('Copy data1').Error.message)",
+											"type": "Expression"
+										},
+										"type": "String"
+									},
+									"SuccessFlag": {
+										"value": "0",
+										"type": "Int32"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ADF010123",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Process File",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": "[dbo].[spI_ProcessOPSData]",
+									"storedProcedureParameters": {
+										"DEBUG": {
+											"type": "Boolean",
+											"value": "false"
+										},
+										"nThreadID": {
+											"type": "Int32",
+											"value": {
+												"value": "@pipeline().parameters.ThreadID",
+												"type": "Expression"
+											}
+										}
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "OPS_LIST",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "RawCount",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Process File",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "RawCount",
+								"value": {
+									"value": "@string(activity('Process File').output.firstRow.RawCount)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FactCount",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Process File",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FactCount",
+								"value": {
+									"value": "@string(activity('Process File').output.firstRow.FactCount)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Finsish File",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "RawCount",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								},
+								{
+									"activity": "FactCount",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spU_SetAGGBulkLoad_OPS]",
+								"storedProcedureParameters": {
+									"nID": {
+										"value": {
+											"value": "@int(variables('FileID'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"nTotalChanged": {
+										"value": {
+											"value": "@int(variables('FactCount'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"nTotalRows": {
+										"value": {
+											"value": "@int(variables('RawCount'))",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"StatusMessage": {
+										"value": "SUCCESS",
+										"type": "String"
+									},
+									"SuccessFlag": {
+										"value": {
+											"value": "@int('1')",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "ADF010123",
+								"type": "LinkedServiceReference"
 							}
 						}
 					]
-				}
-			},
-			{
-				"name": "FailWait",
-				"type": "Wait",
-				"dependsOn": [
-					{
-						"activity": "Valid File",
-						"dependencyConditions": [
-							"Failed"
-						]
-					}
-				],
-				"userProperties": [],
-				"typeProperties": {
-					"waitTimeInSeconds": 1
 				}
 			}
 		],

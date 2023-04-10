@@ -425,7 +425,11 @@
 									"type": "Expression"
 								},
 								"method": "POST",
-								"body": "s"
+								"body": "{“message”:”Cancelling the pipeline”}",
+								"authentication": {
+									"type": "MSI",
+									"resource": "https://management.azure.com"
+								}
 							}
 						}
 					]

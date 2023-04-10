@@ -50,6 +50,10 @@
 			"IsRunning": {
 				"type": "String",
 				"defaultValue": "1"
+			},
+			"FileCount": {
+				"type": "String",
+				"defaultValue": "0"
 			}
 		},
 		"folder": {

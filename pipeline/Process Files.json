@@ -426,7 +426,7 @@
 					"storedProcedureParameters": {
 						"ID": {
 							"value": {
-								"value": "@int(variables('PackageID'))",
+								"value": "@int(pipeline().parameters.MasterPackageID)",
 								"type": "Expression"
 							},
 							"type": "Int32"
@@ -439,7 +439,7 @@
 							"type": "Boolean"
 						},
 						"StatusMessage": {
-							"value": "API CALLS TO GET DATA FILES",
+							"value": "PROCESS LOADED RAW DATA",
 							"type": "String"
 						}
 					}

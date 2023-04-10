@@ -81,13 +81,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "FileID",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					},
-					{
-						"activity": "FileName",
+						"activity": "Valid File",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -387,6 +381,46 @@
 				"linkedServiceName": {
 					"referenceName": "ADF010123",
 					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "Valid File",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "FileID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "FileName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(int(variables('FileID')),0)",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Fail",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "RawCount",
+								"value": {
+									"value": "@string(div(1,0))",
+									"type": "Expression"
+								}
+							}
+						}
+					]
 				}
 			}
 		],

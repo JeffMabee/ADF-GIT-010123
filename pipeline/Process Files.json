@@ -3,23 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Raw Data Thread 1",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "BULK LOAD FILES",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"MasterPackageID": "1",
-						"ThreadID": "1"
-					}
-				}
-			},
-			{
 				"name": "Raw Data Thread 2",
 				"type": "ExecutePipeline",
 				"dependsOn": [],
@@ -34,6 +17,154 @@
 						"ThreadID": "2"
 					}
 				}
+			},
+			{
+				"name": "Process All Files",
+				"type": "Until",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@or(variables('KillSwitch'), less(int(variables('FileCount')),1))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Raw Data Thread 1",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "BULK LOAD FILES",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"MasterPackageID": {
+										"value": "@pipeline().parameters.MasterPackageID",
+										"type": "Expression"
+									},
+									"ThreadID": "1"
+								}
+							}
+						},
+						{
+							"name": "Get Package ControlStatus_INNER",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Raw Data Thread 1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": "[dbo].[spS_GetMasterPackageControlStatus]",
+									"storedProcedureParameters": {
+										"ID": {
+											"type": "Int32",
+											"value": {
+												"value": "@int(variables('PackageID'))",
+												"type": "Expression"
+											}
+										}
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "OPS_LIST",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Check Kill Switch",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get Package ControlStatus_INNER",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "KillSwitch",
+								"value": {
+									"value": "@activity('Get Package ControlStatus_INNER').output.firstRow.KillSwitch",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Check File Count",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Raw Data Thread 1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": "[dbo].[spS_GetNextOPS_File]",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "OPS_LIST",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Set File Count",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Check File Count",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FileCount",
+								"value": {
+									"value": "@string(activity('Check File Count').output.firstRow.CNT)",
+									"type": "Expression"
+								}
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
 			}
 		],
 		"parameters": {
@@ -44,8 +175,8 @@
 		},
 		"variables": {
 			"KillSwitch": {
-				"type": "String",
-				"defaultValue": "0"
+				"type": "Boolean",
+				"defaultValue": false
 			},
 			"IsRunning": {
 				"type": "String",
@@ -54,6 +185,10 @@
 			"FileCount": {
 				"type": "String",
 				"defaultValue": "0"
+			},
+			"PackageID": {
+				"type": "String",
+				"defaultValue": "-1"
 			}
 		},
 		"folder": {

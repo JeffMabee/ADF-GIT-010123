@@ -3,22 +3,6 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Raw Data Thread 2",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "BULK LOAD FILES",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true,
-					"parameters": {
-						"ThreadID": "2"
-					}
-				}
-			},
-			{
 				"name": "Process All Files",
 				"type": "Until",
 				"dependsOn": [],
@@ -158,6 +142,135 @@
 								"variableName": "FileCount",
 								"value": {
 									"value": "@string(activity('Check File Count').output.firstRow.CNT)",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Raw Data Thread 2",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "BULK LOAD FILES",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true,
+								"parameters": {
+									"ThreadID": "2"
+								}
+							}
+						},
+						{
+							"name": "Get Package ControlStatus_INNER_Thread2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Raw Data Thread 2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": "[dbo].[spS_GetMasterPackageControlStatus]",
+									"storedProcedureParameters": {
+										"ID": {
+											"type": "Int32",
+											"value": {
+												"value": "@int(variables('PackageID'))",
+												"type": "Expression"
+											}
+										}
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "OPS_LIST",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Check Kill Switch_Thread2",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Get Package ControlStatus_INNER_Thread2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "KillSwitch",
+								"value": {
+									"value": "@activity('Get Package ControlStatus_INNER_Thread2').output.firstRow.KillSwitch",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Check File Count_Thread2",
+							"type": "Lookup",
+							"dependsOn": [
+								{
+									"activity": "Raw Data Thread 2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderStoredProcedureName": "[dbo].[spS_GetNextOPS_File]",
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"dataset": {
+									"referenceName": "OPS_LIST",
+									"type": "DatasetReference"
+								}
+							}
+						},
+						{
+							"name": "Set File Count_Thread2",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Check File Count_Thread2",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "FileCount",
+								"value": {
+									"value": "@string(activity('Check File Count_Thread2').output.firstRow.CNT)",
 									"type": "Expression"
 								}
 							}

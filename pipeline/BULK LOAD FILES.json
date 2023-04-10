@@ -422,6 +422,22 @@
 						}
 					]
 				}
+			},
+			{
+				"name": "FailWait",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Valid File",
+						"dependencyConditions": [
+							"Failed"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
 			}
 		],
 		"parameters": {

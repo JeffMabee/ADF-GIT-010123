@@ -317,7 +317,7 @@
 											"storedProcedureParameters": {
 												"ID": {
 													"value": {
-														"value": "@int(variables('PackageID'))",
+														"value": "@pipeline().parameters.MasterPackageID",
 														"type": "Expression"
 													},
 													"type": "Int32"
@@ -375,7 +375,7 @@
 											"storedProcedureParameters": {
 												"ID": {
 													"value": {
-														"value": "@int(variables('PackageID'))",
+														"value": "@pipeline().parameters.MasterPackageID",
 														"type": "Expression"
 													},
 													"type": "Int32"

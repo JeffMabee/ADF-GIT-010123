@@ -592,6 +592,32 @@
 					],
 					"timeout": "0.12:00:00"
 				}
+			},
+			{
+				"name": "Process Files",
+				"type": "ExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Load data From API",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"pipeline": {
+						"referenceName": "Process Files",
+						"type": "PipelineReference"
+					},
+					"waitOnCompletion": true,
+					"parameters": {
+						"MasterPackageID": {
+							"value": "@variables('PackageID')",
+							"type": "Expression"
+						}
+					}
+				}
 			}
 		],
 		"variables": {

@@ -498,7 +498,7 @@
 				"typeProperties": {
 					"variableName": "IsRunning",
 					"value": {
-						"value": "@string(activity('Get Package ControlStatus').output.firstRow.IsRunning)",
+						"value": "@bool(activity('Get Package ControlStatus').output.firstRow.IsRunning)",
 						"type": "Expression"
 					}
 				}
@@ -536,8 +536,8 @@
 				"defaultValue": false
 			},
 			"IsRunning": {
-				"type": "String",
-				"defaultValue": "1"
+				"type": "Boolean",
+				"defaultValue": true
 			},
 			"FileCount": {
 				"type": "String",

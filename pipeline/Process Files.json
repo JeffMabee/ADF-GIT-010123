@@ -67,7 +67,7 @@
 										"ID": {
 											"type": "Int32",
 											"value": {
-												"value": "@int(variables('PackageID'))",
+												"value": "@pipeline().parameters.MasterPackageID",
 												"type": "Expression"
 											}
 										}

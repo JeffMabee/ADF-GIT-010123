@@ -48,7 +48,7 @@
 						"parameters": {
 							"Container": "adfcookbook",
 							"Directory": ".",
-							"FileName": "Countries.csv",
+							"FileName": "Airlines.csv",
 							"LinkedServiceConnectionSecret": "StorageConnectionstring"
 						}
 					}
@@ -59,7 +59,7 @@
 						"type": "DatasetReference",
 						"parameters": {
 							"SchemaName": "dbo",
-							"TableName": "Country"
+							"TableName": "Airline"
 						}
 					}
 				]

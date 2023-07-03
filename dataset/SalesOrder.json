@@ -1,0 +1,21 @@
+{
+	"name": "SalesOrder",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataStore_blob",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ADFCookBook"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"fileName": "SalesOrder.txt",
+				"container": "adfcookbook"
+			}
+		}
+	}
+}

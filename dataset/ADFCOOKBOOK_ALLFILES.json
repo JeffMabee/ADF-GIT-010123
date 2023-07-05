@@ -1,0 +1,25 @@
+{
+	"name": "ADFCOOKBOOK_ALLFILES",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "DataStore_blob",
+			"type": "LinkedServiceReference"
+		},
+		"folder": {
+			"name": "ADFCookBook"
+		},
+		"annotations": [],
+		"type": "DelimitedText",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobStorageLocation",
+				"container": "adfcookbook"
+			},
+			"columnDelimiter": ",",
+			"escapeChar": "\\",
+			"firstRowAsHeader": true,
+			"quoteChar": "\""
+		},
+		"schema": []
+	}
+}

@@ -151,7 +151,14 @@
 						{
 							"name": "Delete1",
 							"type": "Delete",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Copy from Data to Backup",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,
@@ -162,20 +169,19 @@
 							"userProperties": [],
 							"typeProperties": {
 								"dataset": {
-									"referenceName": "ADFCOOKBOOK_ALLFILES",
-									"type": "DatasetReference"
+									"referenceName": "CSV_DataStore_AnyKey",
+									"type": "DatasetReference",
+									"parameters": {
+										"Container": "adfcookbook",
+										"Directory": ".",
+										"FileName": {
+											"value": "@item().name",
+											"type": "Expression"
+										},
+										"LinkedServiceConnectionSecret": "StorageConnectionString"
+									}
 								},
-								"logStorageSettings": {
-									"linkedServiceName": {
-										"referenceName": "AnyBlobStorage",
-										"type": "LinkedServiceReference",
-										"parameters": {
-											"ConnectionSecret": "StorageConnectionString"
-										}
-									},
-									"path": "adfcookbook"
-								},
-								"enableLogging": true,
+								"enableLogging": false,
 								"storeSettings": {
 									"type": "AzureBlobStorageReadSettings",
 									"recursive": true,

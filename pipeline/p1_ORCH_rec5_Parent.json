@@ -119,7 +119,7 @@
 				}
 			},
 			{
-				"name": "Execute Pipeline1",
+				"name": "Send Email on Failure",
 				"type": "ExecutePipeline",
 				"dependsOn": [
 					{

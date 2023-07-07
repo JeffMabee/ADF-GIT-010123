@@ -1,5 +1,5 @@
 {
-	"name": "pl_ORCH_Rec5_child",
+	"name": "p1_ORCH_Rec5_Child",
 	"properties": {
 		"activities": [
 			{
@@ -28,6 +28,48 @@
 							"TableName": "EmailRecipient"
 						}
 					}
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [
+					{
+						"activity": "Get Email Rec",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Get Email Rec').output.value",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "SendEmail",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-13.northcentralus.logic.azure.com:443/workflows/1be7b771679042ee95fd510f30918c03/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=hOujktcQvS4M-c0jQAR4euXYhU_dJ1HbeEitzRbautw",
+								"method": "POST",
+								"headers": {
+									"Content-Type": "application/json"
+								},
+								"body": "@json(concat('{\"emailAddress\": \"', item().emailAddress, '\", \"subject\": \"ADF Pipeline Failure\", \"messageBody\": \"ADF Pipeline Failed\"}'))"
+							}
+						}
+					]
 				}
 			}
 		],

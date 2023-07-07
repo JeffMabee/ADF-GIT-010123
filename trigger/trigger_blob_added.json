@@ -1,0 +1,17 @@
+{
+	"name": "trigger_blob_added",
+	"properties": {
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [],
+		"type": "BlobEventsTrigger",
+		"typeProperties": {
+			"blobPathBeginsWith": "/adfcookbook/blobs/",
+			"ignoreEmptyBlobs": true,
+			"scope": "/subscriptions/ccdf1919-42cb-47a6-8146-a07ddb4f555c/resourceGroups/rgDataFactory_010123/providers/Microsoft.Storage/storageAccounts/adfstorage010123",
+			"events": [
+				"Microsoft.Storage.BlobCreated"
+			]
+		}
+	}
+}

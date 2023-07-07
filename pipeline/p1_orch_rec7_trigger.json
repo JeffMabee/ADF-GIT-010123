@@ -130,7 +130,8 @@
 										"FileName": {
 											"value": "@item().name",
 											"type": "Expression"
-										}
+										},
+										"LinkedServiceConnectionSecret": "StorageConnectionString"
 									}
 								}
 							],
@@ -141,7 +142,8 @@
 									"parameters": {
 										"Container": "backkup",
 										"Directory": ".",
-										"FileName": "."
+										"FileName": ".",
+										"LinkedServiceConnectionSecret": "StorageConnectionString"
 									}
 								}
 							]

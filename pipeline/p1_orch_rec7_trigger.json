@@ -35,7 +35,7 @@
 				}
 			},
 			{
-				"name": "FilteronCSV",
+				"name": "Filter for Backup",
 				"type": "Filter",
 				"dependsOn": [
 					{
@@ -52,7 +52,7 @@
 						"type": "Expression"
 					},
 					"condition": {
-						"value": "@endswith(item().name,'.csv')",
+						"value": "@endswith(item().name,'.backup')",
 						"type": "Expression"
 					}
 				}
@@ -62,7 +62,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "FilteronCSV",
+						"activity": "Filter for Backup",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -71,13 +71,13 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('FilteronCSV').output.value",
+						"value": "@activity('Filter for Backup').output.value",
 						"type": "Expression"
 					},
 					"activities": [
 						{
-							"name": "ForEachMetadata",
-							"type": "GetMetadata",
+							"name": "Copy from Data to Backup",
+							"type": "Copy",
 							"dependsOn": [],
 							"policy": {
 								"timeout": "0.12:00:00",
@@ -88,7 +88,21 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"dataset": {
+								"source": {
+									"type": "DelimitedTextSource",
+									"storeSettings": {
+										"type": "AzureBlobStorageReadSettings",
+										"recursive": true,
+										"enablePartitionDiscovery": false
+									},
+									"formatSettings": {
+										"type": "DelimitedTextReadSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
 									"referenceName": "CSV_DataStore_AnyKey",
 									"type": "DatasetReference",
 									"parameters": {
@@ -97,73 +111,10 @@
 										"FileName": {
 											"value": "@item().name",
 											"type": "Expression"
-										},
-										"LinkedServiceConnectionSecret": "StorageConnectionString"
-									}
-								},
-								"fieldList": [
-									"itemName",
-									"lastModified"
-								],
-								"storeSettings": {
-									"type": "AzureBlobStorageReadSettings",
-									"recursive": true,
-									"enablePartitionDiscovery": false
-								},
-								"formatSettings": {
-									"type": "DelimitedTextReadSettings"
-								}
-							}
-						},
-						{
-							"name": "Stored procedure1",
-							"type": "SqlServerStoredProcedure",
-							"dependsOn": [
-								{
-									"activity": "ForEachMetadata",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"storedProcedureName": "[dbo].[InsertFileMetadata]",
-								"storedProcedureParameters": {
-									"FileName": {
-										"value": {
-											"value": "@item().name",
-											"type": "Expression"
-										},
-										"type": "String"
-									},
-									"ModifiedAt": {
-										"value": {
-											"value": "@activity('ForEachMetadata').output.lastModified",
-											"type": "Expression"
-										},
-										"type": "DateTime"
-									},
-									"UpdatedAt": {
-										"value": {
-											"value": "@convertFromUtc(utcnow(),'Eastern Standard Time')",
-											"type": "Expression"
-										},
-										"type": "DateTime"
+										}
 									}
 								}
-							},
-							"linkedServiceName": {
-								"referenceName": "ADF010123",
-								"type": "LinkedServiceReference"
-							}
+							]
 						}
 					]
 				}

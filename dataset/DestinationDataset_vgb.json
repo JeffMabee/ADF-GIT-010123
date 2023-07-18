@@ -1,0 +1,20 @@
+{
+	"name": "DestinationDataset_vgb",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "MyLake",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"folderPath": "Chicago",
+				"fileSystem": "gen2storage"
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}

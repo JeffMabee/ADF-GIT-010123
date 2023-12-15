@@ -1,0 +1,10 @@
+{
+	"name": "CFBConnString",
+	"properties": {
+		"annotations": [],
+		"type": "AzureKeyVault",
+		"typeProperties": {
+			"baseUrl": "https://JMABEE-KEYS.vault.azure.net/"
+		}
+	}
+}

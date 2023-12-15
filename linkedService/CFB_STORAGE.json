@@ -1,0 +1,17 @@
+{
+	"name": "CFB_STORAGE",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobStorage",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "CFBConnString",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "CFB-CSV-FILES"
+			}
+		}
+	}
+}

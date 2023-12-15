@@ -7,7 +7,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Get Next File",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -21,7 +21,7 @@
 				"typeProperties": {
 					"variableName": "FileName",
 					"value": {
-						"value": "@activity('Lookup1').output.firstRow.FilePath",
+						"value": "@activity('Get Next File').output.firstRow.FilePath",
 						"type": "Expression"
 					}
 				}
@@ -31,7 +31,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Get Next File",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -45,13 +45,13 @@
 				"typeProperties": {
 					"variableName": "FileId",
 					"value": {
-						"value": "@activity('Lookup1').output.firstRow.FileID",
+						"value": "@activity('Get Next File').output.firstRow.FileID",
 						"type": "Expression"
 					}
 				}
 			},
 			{
-				"name": "Lookup1",
+				"name": "Get Next File",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {

@@ -19,7 +19,8 @@
 					"value": "@dataset().FileName",
 					"type": "Expression"
 				},
-				"container": "cfb-data"
+				"folderPath": "cfb-files",
+				"container": "blob"
 			},
 			"columnDelimiter": ",",
 			"escapeChar": "\\",

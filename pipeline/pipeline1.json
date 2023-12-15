@@ -80,6 +80,31 @@
 						"type": "DatasetReference"
 					}
 				}
+			},
+			{
+				"name": "Good File",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "FileName",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "File Number",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(variables('FileId'), 0)",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"variables": {

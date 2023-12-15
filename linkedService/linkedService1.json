@@ -1,0 +1,17 @@
+{
+	"name": "linkedService1",
+	"properties": {
+		"annotations": [],
+		"type": "AzureSqlDatabase",
+		"typeProperties": {
+			"connectionString": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "CFBConnString",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "CFBConnStr"
+			}
+		}
+	}
+}

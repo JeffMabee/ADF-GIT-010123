@@ -10,7 +10,8 @@
 					"referenceName": "CFBConnString",
 					"type": "LinkedServiceReference"
 				},
-				"secretName": "CFB-CSV-FILES"
+				"secretName": "CFB-CSV-FILES",
+				"secretVersion": "f1031ff36d0643d4b8f0461bee846509"
 			}
 		}
 	}

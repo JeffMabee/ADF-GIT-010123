@@ -1,0 +1,12 @@
+{
+	"name": "CFBDatabase",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "CFBDataConn",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "AzureSqlTable",
+		"schema": []
+	}
+}

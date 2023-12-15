@@ -3,37 +3,11 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Get Next File",
-				"type": "SqlServerStoredProcedure",
-				"dependsOn": [],
-				"policy": {
-					"timeout": "0.12:00:00",
-					"retry": 0,
-					"retryIntervalInSeconds": 30,
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"storedProcedureName": "[dbo].[spS_GetNextInputFile]",
-					"storedProcedureParameters": {
-						"MasterID": {
-							"value": "22",
-							"type": "Int32"
-						}
-					}
-				},
-				"linkedServiceName": {
-					"referenceName": "CFBDataConn",
-					"type": "LinkedServiceReference"
-				}
-			},
-			{
 				"name": "FileName",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Get Next File",
+						"activity": "Lookup1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -57,7 +31,7 @@
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Get Next File",
+						"activity": "Lookup1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -73,6 +47,37 @@
 					"value": {
 						"value": "@activity('Get Next File').output.firstRow.FileID",
 						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Lookup1",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spS_GetNextInputFile]",
+						"storedProcedureParameters": {
+							"MasterID": {
+								"type": "Int32",
+								"value": "22"
+							}
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "CFBDatabase",
+						"type": "DatasetReference"
 					}
 				}
 			}

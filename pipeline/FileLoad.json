@@ -369,7 +369,7 @@
 										},
 										{
 											"source": {
-												"name": "Away Line Scores[2]",
+												"name": "Home Line Scores[2]",
 												"type": "String",
 												"physicalType": "String"
 											},

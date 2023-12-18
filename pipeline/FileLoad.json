@@ -138,6 +138,476 @@
 								"enableStaging": false,
 								"translator": {
 									"type": "TabularTranslator",
+									"mappings": [
+										{
+											"source": {
+												"name": "Id",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Id",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Season",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Season",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Week",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Week",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Season Type",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "SeasonType",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Start Date",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "StartDate",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Start Time Tbd",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "StartTime Tbd",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Completed",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Completed",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Neutral Site",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "NeutralSite",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Conference Game",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ConferenceGame",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Attendance",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Attendance",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Venue Id",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "VenueId",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Venue",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Venue",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Id",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomeId",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Team",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomeTeam",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Conference",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomeConference",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Division",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomeDivision",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Points",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomePoints",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Line Scores[0]",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomeLineScores0 ",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Line Scores[1]",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomeLineScores1 ",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Line Scores[2]",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomeLineScores2 ",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Line Scores[3]",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomeLineScores3 ",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Post Win Prob",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomePostWinProb",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Pregame Elo",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomePregameElo",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Postgame Elo",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "HomePostgameElo",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Id",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayId",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Team",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayTeam",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Conference",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayConference",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Division",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayDivision",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Points",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayPoints",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Home Line Scores[0]",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayLineScores0 ",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Line Scores[1]",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayLineScores1 ",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Line Scores[2]",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayLineScores2 ",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Line Scores[3]",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayLineScores3 ",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Post Win Prob",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayPostWinProb",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Pregame Elo",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayPregameElo",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Away Postgame Elo",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "AwayPostgameElo",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Excitement Index",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "ExcitementIndex",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Highlights",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Highlights",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										},
+										{
+											"source": {
+												"name": "Notes",
+												"type": "String",
+												"physicalType": "String"
+											},
+											"sink": {
+												"name": "Notes",
+												"type": "String",
+												"physicalType": "varchar"
+											}
+										}
+									],
 									"typeConversion": true,
 									"typeConversionSettings": {
 										"allowDataTruncation": true,

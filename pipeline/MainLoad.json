@@ -3,31 +3,37 @@
 	"properties": {
 		"activities": [
 			{
-				"name": "Do Files",
-				"type": "Until",
+				"name": "Do File",
+				"type": "ExecutePipeline",
 				"dependsOn": [],
 				"userProperties": [],
 				"typeProperties": {
-					"expression": {
-						"value": "@greater(variables('PipelineReturn'),0)",
-						"type": "Expression"
+					"pipeline": {
+						"referenceName": "FileLoad",
+						"type": "PipelineReference"
 					},
-					"activities": [
-						{
-							"name": "Do File",
-							"type": "ExecutePipeline",
-							"dependsOn": [],
-							"userProperties": [],
-							"typeProperties": {
-								"pipeline": {
-									"referenceName": "FileLoad",
-									"type": "PipelineReference"
-								},
-								"waitOnCompletion": true
-							}
-						}
-					],
-					"timeout": "0.12:00:00"
+					"waitOnCompletion": true
+				}
+			},
+			{
+				"name": "Set variable1",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Do File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "PipelineReturn",
+					"value": ""
 				}
 			}
 		],

@@ -12,6 +12,21 @@
 						"value": "@greater(variables('PipelineReturn'),0)",
 						"type": "Expression"
 					},
+					"activities": [
+						{
+							"name": "Do File",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "FileLoad",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						}
+					],
 					"timeout": "0.12:00:00"
 				}
 			}

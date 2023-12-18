@@ -111,6 +111,22 @@
 						"value": "@greater(variables('FileId'), 0)",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "PipelineReturnValue",
+								"value": 0
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "Load Raw File",
@@ -813,17 +829,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "pipelineReturnValue",
-								"value": [
-									{
-										"key": "ReturnValue",
-										"value": {
-											"type": "Int",
-											"content": 0
-										}
-									}
-								],
-								"setSystemVariable": true
+								"variableName": "PipelineReturnValue",
+								"value": 0
 							}
 						},
 						{
@@ -843,17 +850,8 @@
 							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "pipelineReturnValue",
-								"value": [
-									{
-										"key": "ReturnValue",
-										"value": {
-											"type": "Int",
-											"content": 1
-										}
-									}
-								],
-								"setSystemVariable": true
+								"variableName": "PipelineReturnValue",
+								"value": 1
 							}
 						}
 					]
@@ -884,6 +882,36 @@
 					],
 					"scriptBlockExecutionTimeout": "02:00:00"
 				}
+			},
+			{
+				"name": "Return to Main",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Good File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineReturnValue",
+					"value": [
+						{
+							"key": "PipelineReturnValue",
+							"value": {
+								"type": "Expression",
+								"content": "@variables('PipelineReturnValue')"
+							}
+						}
+					],
+					"setSystemVariable": true
+				}
 			}
 		],
 		"variables": {
@@ -895,6 +923,10 @@
 				"defaultValue": -1
 			},
 			"RowCount": {
+				"type": "Integer",
+				"defaultValue": 0
+			},
+			"PipelineReturnValue": {
 				"type": "Integer",
 				"defaultValue": 0
 			}

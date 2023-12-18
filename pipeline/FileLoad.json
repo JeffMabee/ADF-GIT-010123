@@ -820,7 +820,7 @@
 							}
 						},
 						{
-							"name": "Set variable2",
+							"name": "Set SUCCESS return",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -837,6 +837,15 @@
 							"userProperties": [],
 							"typeProperties": {
 								"variableName": "pipelineReturnValue",
+								"value": [
+									{
+										"key": "ReturnValue",
+										"value": {
+											"type": "Int",
+											"content": 1
+										}
+									}
+								],
 								"setSystemVariable": true
 							}
 						}

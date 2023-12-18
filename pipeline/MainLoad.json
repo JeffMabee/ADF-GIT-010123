@@ -33,7 +33,10 @@
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "PipelineReturn",
-					"value": ""
+					"value": {
+						"value": "@activity('Do File').output.pipelineReturnValue",
+						"type": "Expression"
+					}
 				}
 			}
 		],

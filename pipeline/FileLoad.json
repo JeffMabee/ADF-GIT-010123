@@ -790,7 +790,7 @@
 							}
 						},
 						{
-							"name": "Set variable1",
+							"name": "Set FAIL Return",
 							"type": "SetVariable",
 							"dependsOn": [
 								{
@@ -816,6 +816,27 @@
 										}
 									}
 								],
+								"setSystemVariable": true
+							}
+						},
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "FinishLoad",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "pipelineReturnValue",
 								"setSystemVariable": true
 							}
 						}

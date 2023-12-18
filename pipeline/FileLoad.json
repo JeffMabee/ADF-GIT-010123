@@ -656,7 +656,7 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT COUNT(*) from dbo.rawCFB",
+									"sqlReaderQuery": "SELECT COUNT(*) CNT from dbo.rawCFB",
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -664,6 +664,129 @@
 									"referenceName": "CFBDatabase",
 									"type": "DatasetReference"
 								}
+							}
+						},
+						{
+							"name": "SET Row Count",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "GetRowCount",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "RowCount",
+								"value": {
+									"value": "@activity('GetRowCount').output.firstRow.CNT",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "FinishLoad",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "SET Row Count",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spU_FinishFileLoad]",
+								"storedProcedureParameters": {
+									"nID": {
+										"value": {
+											"value": "@variables('FileId')",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"nTotalRows": {
+										"value": {
+											"value": "@variables('RowCount')",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"StatusMessage": {
+										"value": "SUCCESS",
+										"type": "String"
+									},
+									"SuccessFlag": {
+										"value": "1",
+										"type": "Int32"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "CFBDataConn",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "FAIL Finish Load",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [
+								{
+									"activity": "Load Raw File",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spU_FinishFileLoad]",
+								"storedProcedureParameters": {
+									"nID": {
+										"value": {
+											"value": "@variables('FileId')",
+											"type": "Expression"
+										},
+										"type": "Int32"
+									},
+									"nTotalRows": {
+										"value": "0",
+										"type": "Int32"
+									},
+									"StatusMessage": {
+										"value": "FAILED",
+										"type": "String"
+									},
+									"SuccessFlag": {
+										"value": "0",
+										"type": "Int32"
+									}
+								}
+							},
+							"linkedServiceName": {
+								"referenceName": "CFBDataConn",
+								"type": "LinkedServiceReference"
 							}
 						}
 					]
@@ -677,6 +800,10 @@
 			"FileId": {
 				"type": "Integer",
 				"defaultValue": -1
+			},
+			"RowCount": {
+				"type": "Integer",
+				"defaultValue": 0
 			}
 		},
 		"folder": {

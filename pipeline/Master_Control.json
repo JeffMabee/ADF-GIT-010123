@@ -18,6 +18,16 @@
 					"source": {
 						"type": "AzureSqlSource",
 						"sqlReaderStoredProcedureName": "[dbo].[spI_StartMasterPackageControl]",
+						"storedProcedureParameters": {
+							"PackageName": {
+								"type": "String",
+								"value": "CFB Load"
+							},
+							"StatusMessage": {
+								"type": "String",
+								"value": "STARTING"
+							}
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},

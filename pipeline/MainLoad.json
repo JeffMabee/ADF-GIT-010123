@@ -104,7 +104,7 @@
 							"type": "SetVariable",
 							"dependsOn": [
 								{
-									"activity": "Add To Dims",
+									"activity": "Add to Fact Table",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -123,7 +123,14 @@
 						{
 							"name": "Add to Fact Table",
 							"type": "SqlServerStoredProcedure",
-							"dependsOn": [],
+							"dependsOn": [
+								{
+									"activity": "Add To Dims",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
 							"policy": {
 								"timeout": "0.12:00:00",
 								"retry": 0,

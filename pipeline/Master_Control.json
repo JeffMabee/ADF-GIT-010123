@@ -75,7 +75,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"expression": {
-						"value": "@and(equals(variables('IsRunning'),1),equals(variables('KillSwitch'),0))",
+						"value": "@equals(variables('IsRunning'),0)",
 						"type": "Expression"
 					},
 					"activities": [

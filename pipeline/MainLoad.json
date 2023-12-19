@@ -116,6 +116,26 @@
 								"variableName": "ProcessFileReturn",
 								"value": 1
 							}
+						},
+						{
+							"name": "Add to Fact Table",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spI_AddToFactTable]"
+							},
+							"linkedServiceName": {
+								"referenceName": "CFBDataConn",
+								"type": "LinkedServiceReference"
+							}
 						}
 					]
 				}

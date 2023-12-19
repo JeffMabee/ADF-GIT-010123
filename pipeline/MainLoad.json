@@ -56,6 +56,22 @@
 						"value": "@greater(variables('FileLoadReturn'),0)",
 						"type": "Expression"
 					},
+					"ifFalseActivities": [
+						{
+							"name": "Process Return FAIL",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "ProcessFileReturn",
+								"value": 0
+							}
+						}
+					],
 					"ifTrueActivities": [
 						{
 							"name": "Add To Dims",
@@ -76,8 +92,59 @@
 								"referenceName": "CFBDataConn",
 								"type": "LinkedServiceReference"
 							}
+						},
+						{
+							"name": "Process Return",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Add To Dims",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "ProcessFileReturn",
+								"value": 1
+							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Return To Loop",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "If Condition1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "pipelineReturnValue",
+					"value": [
+						{
+							"key": "ProcessFileReturn",
+							"value": {
+								"type": "Expression",
+								"content": "@variables('ProcessFileReturn')"
+							}
+						}
+					],
+					"setSystemVariable": true
 				}
 			}
 		],

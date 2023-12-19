@@ -746,7 +746,7 @@
 									},
 									"StatusMessage": {
 										"value": {
-											"value": "@concat('FAILED: ', activity('Load Raw File').errror.message)",
+											"value": "@concat('FAILED: ', activity('Load Raw File').error.message)",
 											"type": "Expression"
 										},
 										"type": "String"

@@ -34,7 +34,7 @@
 				"typeProperties": {
 					"variableName": "PipelineReturn",
 					"value": {
-						"value": "@activity('Do File').output.pipelineReturnValue",
+						"value": "@activity('Do File').output.pipelineReturnValue.PipelineReturnValue",
 						"type": "Expression"
 					}
 				}

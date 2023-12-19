@@ -12,7 +12,10 @@
 						"referenceName": "FileLoad",
 						"type": "PipelineReference"
 					},
-					"waitOnCompletion": true
+					"waitOnCompletion": true,
+					"parameters": {
+						"MasterPipelineID": 44
+					}
 				}
 			},
 			{

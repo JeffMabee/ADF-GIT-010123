@@ -76,7 +76,10 @@
 						"storedProcedureParameters": {
 							"MasterID": {
 								"type": "Int32",
-								"value": "22"
+								"value": {
+									"value": "@pipeline().parameters.MasterPipelineID",
+									"type": "Expression"
+								}
 							}
 						},
 						"queryTimeout": "02:00:00",
@@ -914,6 +917,12 @@
 				}
 			}
 		],
+		"parameters": {
+			"MasterPipelineID": {
+				"type": "int",
+				"defaultValue": 1
+			}
+		},
 		"variables": {
 			"FileName": {
 				"type": "String"

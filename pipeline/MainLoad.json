@@ -16,7 +16,7 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Did it Load File",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
@@ -32,11 +32,52 @@
 				},
 				"userProperties": [],
 				"typeProperties": {
-					"variableName": "PipelineReturn",
+					"variableName": "FileLoadReturn",
 					"value": {
 						"value": "@activity('Do File').output.pipelineReturnValue.PipelineReturnValue",
 						"type": "Expression"
 					}
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Did it Load File",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@greater(variables('FileLoadReturn'),0)",
+						"type": "Expression"
+					},
+					"ifTrueActivities": [
+						{
+							"name": "Add To Dims",
+							"type": "SqlServerStoredProcedure",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"storedProcedureName": "[dbo].[spS_AddToDims]"
+							},
+							"linkedServiceName": {
+								"referenceName": "CFBDataConn",
+								"type": "LinkedServiceReference"
+							}
+						}
+					]
 				}
 			}
 		],
@@ -44,6 +85,14 @@
 			"PipelineReturn": {
 				"type": "Integer",
 				"defaultValue": 1
+			},
+			"FileLoadReturn": {
+				"type": "Integer",
+				"defaultValue": 1
+			},
+			"ProcessFileReturn": {
+				"type": "Integer",
+				"defaultValue": 0
 			}
 		},
 		"folder": {

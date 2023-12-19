@@ -745,7 +745,10 @@
 										"type": "Int32"
 									},
 									"StatusMessage": {
-										"value": "FAILED",
+										"value": {
+											"value": "@concat('FAILED: ', activity('Load Raw File').errror.message)",
+											"type": "Expression"
+										},
 										"type": "String"
 									},
 									"SuccessFlag": {

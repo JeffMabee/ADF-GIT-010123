@@ -661,71 +661,11 @@
 							]
 						},
 						{
-							"name": "GetRowCount",
-							"type": "Lookup",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
-							"dependsOn": [
-								{
-									"activity": "Load Raw File",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"timeout": "0.12:00:00",
-								"retry": 0,
-								"retryIntervalInSeconds": 30,
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"source": {
-									"type": "AzureSqlSource",
-									"sqlReaderQuery": "SELECT COUNT(*) CNT from dbo.rawCFB",
-									"queryTimeout": "02:00:00",
-									"partitionOption": "None"
-								},
-								"dataset": {
-									"referenceName": "CFBDatabase",
-									"type": "DatasetReference"
-								}
-							}
-						},
-						{
-							"name": "SET Row Count",
-							"type": "SetVariable",
-							"state": "Inactive",
-							"onInactiveMarkAs": "Succeeded",
-							"dependsOn": [
-								{
-									"activity": "GetRowCount",
-									"dependencyConditions": [
-										"Succeeded"
-									]
-								}
-							],
-							"policy": {
-								"secureOutput": false,
-								"secureInput": false
-							},
-							"userProperties": [],
-							"typeProperties": {
-								"variableName": "RowCount",
-								"value": {
-									"value": "@activity('GetRowCount').output.firstRow.CNT",
-									"type": "Expression"
-								}
-							}
-						},
-						{
 							"name": "FinishLoad",
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "Set variable2",
+									"activity": "GetRowCount",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -862,7 +802,7 @@
 							}
 						},
 						{
-							"name": "Set variable2",
+							"name": "GetRowCount",
 							"type": "SetVariable",
 							"dependsOn": [
 								{

@@ -1,0 +1,154 @@
+{
+	"name": "Master_Control",
+	"properties": {
+		"activities": [
+			{
+				"name": "Start Master Process",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderStoredProcedureName": "[dbo].[spI_StartMasterPackageControl]",
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "CFBDatabase",
+						"type": "DatasetReference"
+					}
+				}
+			},
+			{
+				"name": "Get Package ID",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "Start Master Process",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "MasterPipelineID",
+					"value": {
+						"value": "@activity('Start Master Process').output.firstRow.ID",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Load FIles",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Get Package ID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@and(equals(variables('IsRunning'),1),equals(variables('KillSwitch'),0))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "Call Main Load",
+							"type": "ExecutePipeline",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"pipeline": {
+									"referenceName": "MainLoad",
+									"type": "PipelineReference"
+								},
+								"waitOnCompletion": true
+							}
+						},
+						{
+							"name": "Set variable1",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Call Main Load",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "IsRunning",
+								"value": {
+									"value": "@activity('Call Main Load').output.pipelineReturnValue.ProcessFileReturn",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "KillSwitch",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Call Main Load",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "KillSwitch",
+								"value": 1
+							}
+						}
+					],
+					"timeout": "0.12:00:00"
+				}
+			}
+		],
+		"variables": {
+			"MasterPipelineID": {
+				"type": "Integer",
+				"defaultValue": -1
+			},
+			"IsRunning": {
+				"type": "Integer",
+				"defaultValue": 1
+			},
+			"KillSwitch": {
+				"type": "Integer",
+				"defaultValue": 0
+			}
+		},
+		"folder": {
+			"name": "CFB"
+		},
+		"annotations": []
+	}
+}

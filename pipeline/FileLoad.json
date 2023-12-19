@@ -663,6 +663,8 @@
 						{
 							"name": "GetRowCount",
 							"type": "Lookup",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "Load Raw File",
@@ -695,6 +697,8 @@
 						{
 							"name": "SET Row Count",
 							"type": "SetVariable",
+							"state": "Inactive",
+							"onInactiveMarkAs": "Succeeded",
 							"dependsOn": [
 								{
 									"activity": "GetRowCount",
@@ -721,7 +725,7 @@
 							"type": "SqlServerStoredProcedure",
 							"dependsOn": [
 								{
-									"activity": "SET Row Count",
+									"activity": "Set variable2",
 									"dependencyConditions": [
 										"Succeeded"
 									]
@@ -855,6 +859,30 @@
 							"typeProperties": {
 								"variableName": "PipelineReturnValue",
 								"value": 1
+							}
+						},
+						{
+							"name": "Set variable2",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Load Raw File",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "RowCount",
+								"value": {
+									"value": "@activity('Load Raw File').output.rowsCopied",
+									"type": "Expression"
+								}
 							}
 						}
 					]
